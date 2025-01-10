@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 
 //Protect route checks is the user is logged in or not
 const protectRoute = async (req, res, next) => {
+  
   try {
     const token = req.cookies.jwt;
 
