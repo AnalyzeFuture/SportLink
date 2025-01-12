@@ -15,7 +15,7 @@ const UserPost = ({ likes, replies, postImg, postTitle }) => {
       <Flex gap={3} mb={4} py={5}>
         <Flex flexDirection={"column"} alignItems={"center"}>
           <Avatar size="md" name="Neeraj Chopra" src="/neeraj-chopra.jpg" />
-          <Box w="1px" h={"full"} bg="gray.light" my={2}></Box>
+          <Box w="1px" h={"full"} bg="red.500" my={2}></Box>
           <Box position={"relative"} w={"full"}>
             <Avatar
               size="xs"

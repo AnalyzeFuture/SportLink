@@ -29,11 +29,11 @@ const UserHeader = () => {
             Neeraj Chopra
           </Text>
           <Flex gap={2} alignItems={"center"}>
-            <Text fontSize={"sm"}>Mark</Text>
+            <Text fontSize={"sm"}>Neeraj</Text>
             <Text
               fontSize={"xs"}
-              bg={"gray.dark"}
-              color={"gray.light"}
+              bg={"blackAlpha.100"}
+              color={"purple.500"}
               p={1}
               borderRadius={"full"}
             >
