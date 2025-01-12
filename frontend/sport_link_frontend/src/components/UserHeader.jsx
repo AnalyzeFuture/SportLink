@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { BsInstagram } from "react-icons/bs";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { Portal } from "@chakra-ui/react";
-import { Button, useToast } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 import { CgMoreO } from "react-icons/cg";
 const UserHeader = () => {
   const toast = useToast();
@@ -41,7 +41,14 @@ const UserHeader = () => {
           </Flex>
         </Box>
         <Box>
-          <Avatar name="Mark Zuckerberg" src="/zuck-avatar.png" size={"xl"} />
+          <Avatar
+            name="Mark Zuckerberg"
+            src="/zuck-avatar.png"
+            size={{
+              base: "md",
+              md: "lg",
+            }}
+          />
         </Box>
       </Flex>
       <Text> Co-founder , executive chairman and CEO of Meta </Text>
