@@ -8,6 +8,7 @@ import {
   Divider,
   Button,
 } from "@chakra-ui/react";
+import img from "../../public/neeraj-chopra.jpg";
 // import { DeleteIcon } from "@chakra-ui/icons";
 import { BsThreeDots } from "react-icons/bs";
 import { useState } from "react";
@@ -19,10 +20,10 @@ const PostPage = () => {
     <>
       <Flex>
         <Flex w={"full"} alignItems={"center"} gap={3}>
-          <Avatar src="/zuck-avatar.png" size={"md"} name="Mark Zuckerberg" />
+          <Avatar src={img} size={"md"} name="Neeraj Chopra" />
           <Flex>
             <Text fontSize={"sm"} fontWeight={"bold"}>
-              Mark Zuckerberg
+              Neeraj Chopra
             </Text>
             <Image src="/verified.png" w="4" h={4} ml={4} />
           </Flex>
@@ -41,7 +42,7 @@ const PostPage = () => {
         </Flex>
       </Flex>
 
-      <Text my={3}> Let's talk about Threads.</Text>
+      <Text my={3}> Neeraj Chopra's best throws</Text>
       <Box
         borderRadius={6}
         overflow={"hidden"}

@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import { Button, Container } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 import Userpage from "./pages/UserPage";
 import Postpage from "./pages/postPage";
 import Header from "./components/Header";

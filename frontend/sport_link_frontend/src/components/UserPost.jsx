@@ -11,10 +11,10 @@ import Actions from "./Actions";
 const UserPost = ({ likes, replies, postImg, postTitle }) => {
   const [liked, setLiked] = useState(false);
   return (
-    <Link to={"/markzuckerberg/post/1"}>
+    <Link to={"/neerajchopra/post/1"}>
       <Flex gap={3} mb={4} py={5}>
         <Flex flexDirection={"column"} alignItems={"center"}>
-          <Avatar size="md" name="Mark Zuckerberg" src="/zuck-avatar.png" />
+          <Avatar size="md" name="Neeraj Chopra" src="/neeraj-chopra.jpg" />
           <Box w="1px" h={"full"} bg="gray.light" my={2}></Box>
           <Box position={"relative"} w={"full"}>
             <Avatar
@@ -50,7 +50,7 @@ const UserPost = ({ likes, replies, postImg, postTitle }) => {
           <Flex justifyContent={"space-between"} w={"full"}>
             <Flex w={"full"} alignItems={"center"}>
               <Text fontSize={"sm"} fontWeight={"bold"}>
-                markzuckerberg
+                neerajchopra
               </Text>
               <Image src="/verified.png" w={4} h={4} ml={1} />
             </Flex>

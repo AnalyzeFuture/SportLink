@@ -9,24 +9,24 @@ const UserPage = () => {
         likes={1300}
         replies={200}
         postImg="/post1.png"
-        postTitle="Let's talk about threads."
+        postTitle="Neeraj Chopra's best throws"
       />
       <UserPost
         likes={2500}
         replies={400}
         postImg="/post2.png"
-        postTitle="Nice Course"
+        postTitle="Neeraj Chopra At Paris Olympics"
       />
       <UserPost
         likes={1600}
         replies={100}
         postImg="/post3.png"
-        postTitle="Elon musk & future?"
+        postTitle="Gold Medal Locked In for India"
       />
       <UserPost
         likes={1550}
         replies={25}
-        postTitle="This is my first thread."
+        postTitle=" Neeraj Chopra Becomes 1st Indian To Win Gold At World Athletics Championships"
       />
     </>
   );

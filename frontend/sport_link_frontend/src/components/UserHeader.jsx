@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { BsInstagram } from "react-icons/bs";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { Portal } from "@chakra-ui/react";
+import img from "../../public/neeraj-chopra.jpg";
 import { useToast } from "@chakra-ui/react";
 import { CgMoreO } from "react-icons/cg";
 const UserHeader = () => {
@@ -25,7 +26,7 @@ const UserHeader = () => {
       <Flex justifyContent={"space-between"} w={"full"}>
         <Box>
           <Text fontSize={"2xl"} fontWeight={"bold"}>
-            Mark Zuckerberg
+            Neeraj Chopra
           </Text>
           <Flex gap={2} alignItems={"center"}>
             <Text fontSize={"sm"}>Mark</Text>
@@ -42,8 +43,8 @@ const UserHeader = () => {
         </Box>
         <Box>
           <Avatar
-            name="Mark Zuckerberg"
-            src="/zuck-avatar.png"
+            name="Neera Chopra"
+            src={img}
             size={{
               base: "md",
               md: "lg",
@@ -51,7 +52,7 @@ const UserHeader = () => {
           />
         </Box>
       </Flex>
-      <Text> Co-founder , executive chairman and CEO of Meta </Text>
+      <Text> Neeraj Chopra - Olympic Javelin Champion!🥇</Text>
       <Flex w={"full"} justifyContent={"space-between"}>
         <Flex gap={2} alignItems={"center"}>
           <Text color={"gray.light"}>3.2k followers</Text>
