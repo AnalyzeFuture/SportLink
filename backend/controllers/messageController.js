@@ -74,4 +74,27 @@ const getMessages = async (req, res) => {
   }
 };
 
-export { sendMessage, getMessages };
+const getConversations = async (req, res) => {
+  const userId = req.user._id;
+  try {
+    // console.log("userId :", userId);
+    const conversations = await Conversation.find({
+      participants: userId,
+    }).populate({
+      path: "participants",
+      select: "username profilePic",
+    });
+
+    res.status(200).json(conversations);
+  } catch (error) {
+    res.status(500).json({ userId: userId, error: error.message });
+    // console.log(
+    //   "Error inside the getConversation: ",
+    //   error,
+    //   "\nuserID : ",
+    //   userId
+    // );
+  }
+};
+
+export { sendMessage, getMessages, getConversations };
