@@ -176,7 +176,7 @@ const SignupCard = () => {
     </StyledWrapper>
   );
 };
-
+//worked selfed --prajwal card embeded
 const StyledWrapper = styled.div`
   .wrapper {
     --input-focus: #2d8cf0;

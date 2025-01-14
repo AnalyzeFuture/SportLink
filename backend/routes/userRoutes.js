@@ -12,8 +12,8 @@ import protectRoute from "../middleware/protectRoute.js";
 const router = express.Router();
 
 router.get("/profile/:username", getUserProfile);
-router.post("/signup", signupUser);
-router.post("/login", loginUser);
+router.post("/signup", signupUser); //signup route
+router.post("/login", loginUser); // login route
 router.post("/logout", logoutUser);
 router.post("/follow/:id", protectRoute, followUnFollowUser); //id is going to be of the user to be followed/unfollowed
 router.post("/update/:id", protectRoute, updateUser);
