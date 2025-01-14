@@ -88,7 +88,7 @@ const UserHeader = () => {
           pb="3"
           cursor={"pointer"}
         >
-          <Text fontWeight={"bold"}> Threads</Text>
+          <Text fontWeight={"bold"}>Tracks</Text>
         </Flex>
         <Flex
           flex={1}
