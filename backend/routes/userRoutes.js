@@ -8,7 +8,7 @@ import {
   getUserProfile,
 } from "../controllers/userController.js";
 import protectRoute from "../middleware/protectRoute.js";
-
+//updated routes
 const router = express.Router();
 
 router.get("/profile/:username", getUserProfile);
