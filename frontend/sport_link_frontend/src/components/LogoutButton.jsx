@@ -20,9 +20,10 @@ const LogoutButton = () => {
         showToast("Error", data.error, "error");
         return;
       }
-
+      // console.log("before user-threads null");
       localStorage.removeItem("user-threads");
       setUser(null);
+      // console.log("after user-threads null");
     } catch (error) {
       console.log(error);
     }

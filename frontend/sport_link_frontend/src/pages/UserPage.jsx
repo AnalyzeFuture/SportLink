@@ -5,6 +5,7 @@ const UserPage = () => {
   return (
     <>
       <UserHeader />
+
       <UserPost
         likes={1300}
         replies={200}

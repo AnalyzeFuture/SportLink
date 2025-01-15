@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { BsThreeDots } from "react-icons/bs";
 import { useState } from "react";
 import Actions from "./Actions";
+import img from "../assets/neeraj-chopra.jpg";
 
 const UserPost = ({ likes, replies, postImg, postTitle }) => {
   const [liked, setLiked] = useState(false);
@@ -14,7 +15,7 @@ const UserPost = ({ likes, replies, postImg, postTitle }) => {
     <Link to={"/neerajchopra/post/1"}>
       <Flex gap={3} mb={4} py={5}>
         <Flex flexDirection={"column"} alignItems={"center"}>
-          <Avatar size="md" name="Neeraj Chopra" src="/neeraj-chopra.jpg" />
+          <Avatar size="md" name="Neeraj Chopra" src={img} />
           <Box w="1px" h={"full"} bg="red.500" my={2}></Box>
           <Box position={"relative"} w={"full"}>
             <Avatar

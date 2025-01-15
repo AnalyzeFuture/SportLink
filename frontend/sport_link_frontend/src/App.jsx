@@ -26,8 +26,14 @@ function App() {
           path="/auth"
           element={!user ? <AuthPage /> : <Navigate to="/" />}
         />
-        <Route path="/:username" element={<Userpage />} />
-        <Route path="/:username/post/:pid" element={<Postpage />} />
+        <Route
+          path="/:username"
+          element={user ? <Userpage /> : <Navigate to={"/auth"} />}
+        />
+        <Route
+          path="/:username/post/:pid"
+          element={user ? <Postpage /> : <Navigate to={"/auth"} />}
+        />
       </Routes>
       {user && <LogoutButton />}
     </Container>

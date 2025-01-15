@@ -20,7 +20,7 @@ const signupUser = async (req, res) => {
   try {
     const { name, email, username, password } = req.body;
     const user = await User.findOne({ $or: [{ email }, { username }] });
-
+    console.log("user info inside signup: ", name);
     if (user) {
       return res.status(400).json({ error: "User already exists" });
     }
@@ -59,6 +59,7 @@ const loginUser = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
+    console.log("user info inside signup: ", req.body);
     const isPasswordCorrect = await bcrypt.compare(
       password,
       user?.password || ""

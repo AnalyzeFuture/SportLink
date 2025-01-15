@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { BsInstagram } from "react-icons/bs";
 import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { Portal } from "@chakra-ui/react";
-import img from "../../public/neeraj-chopra.jpg";
+import img from "../assets/neeraj-chopra.jpg";
 import { useToast } from "@chakra-ui/react";
 import { CgMoreO } from "react-icons/cg";
 const UserHeader = () => {
@@ -37,7 +37,7 @@ const UserHeader = () => {
               p={1}
               borderRadius={"full"}
             >
-              threads.next
+              sport.link
             </Text>
           </Flex>
         </Box>

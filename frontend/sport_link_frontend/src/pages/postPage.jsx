@@ -8,7 +8,7 @@ import {
   Divider,
   Button,
 } from "@chakra-ui/react";
-import img from "../../public/neeraj-chopra.jpg";
+import img from "../assets/neeraj-chopra.jpg";
 // import { DeleteIcon } from "@chakra-ui/icons";
 import { BsThreeDots } from "react-icons/bs";
 import { useState } from "react";

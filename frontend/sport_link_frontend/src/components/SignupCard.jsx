@@ -6,22 +6,22 @@ import userAtom from "../atoms/userAtom";
 
 const SignupCard = () => {
   const [logininputs, setInputsforlogin] = useState({
-    usernamelogin: "",
-    passwordslogin: "",
+    username: "",
+    password: "",
   });
   const [signupinputs, setInputsforsingup] = useState({
-    namesingup: "",
-    usernamesingup: "",
-    emailsingup: "",
-    passwordsingup: "",
+    name: "",
+    username: "",
+    email: "",
+    password: "",
   });
   const showToast = useShowToast();
   const setUser = useSetRecoilState(userAtom);
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    console.log(logininputs);
     try {
-      console.log(logininputs);
-
       const res = await fetch("/api/users/login", {
         method: "POST",
         headers: {
@@ -31,8 +31,14 @@ const SignupCard = () => {
       });
       const data = await res.json();
       console.log(data);
+      if (data.error) {
+        showToast("Error", data.error, "error");
+        return;
+      }
+      localStorage.setItem("user-threads", JSON.stringify(data));
+      setUser(data);
     } catch (error) {
-      showToast("Error", error, "error");
+      console.log(error);
     }
   };
   const handleSignup = async (e) => {
@@ -41,7 +47,7 @@ const SignupCard = () => {
     //   alert("Please fill in all fields!");
     //   return;
     // }
-    // console.log(inputs);
+    console.log("signup inputs: ", signupinputs);
     try {
       const res = await fetch("/api/users/signup", {
         method: "POST",
@@ -51,7 +57,7 @@ const SignupCard = () => {
         body: JSON.stringify(signupinputs),
       });
       const data = await res.json();
-      console.log(data);
+      console.log("after post req: ", data);
 
       if (data.error) {
         showToast("Error", data.error, "error");
@@ -75,20 +81,16 @@ const SignupCard = () => {
             <div className="flip-card__inner">
               <div className="flip-card__front">
                 <div className="title">Log in</div>
-                <form
-                  className="flip-card__form"
-                  action={true}
-                  onSubmit={handleLogin}
-                >
+                <form className="flip-card__form" onSubmit={handleLogin}>
                   <input
                     className="flip-card__input"
                     name="username"
                     placeholder="Username"
-                    value={logininputs.usernamelogin}
+                    value={logininputs.username}
                     onChange={(e) =>
                       setInputsforlogin((logininputs) => ({
                         ...logininputs,
-                        usernamelogin: e.target.value,
+                        username: e.target.value,
                       }))
                     }
                     type="text"
@@ -97,11 +99,11 @@ const SignupCard = () => {
                     className="flip-card__input"
                     name="password"
                     placeholder="Password"
-                    value={logininputs.passwordslogin}
+                    value={logininputs.password}
                     onChange={(e) =>
                       setInputsforlogin((logininputs) => ({
                         ...logininputs,
-                        passwordslogin: e.target.value,
+                        password: e.target.value,
                       }))
                     }
                     type="password"
@@ -118,10 +120,10 @@ const SignupCard = () => {
                     onChange={(e) =>
                       setInputsforsingup({
                         ...signupinputs,
-                        namesingup: e.target.value,
+                        name: e.target.value,
                       })
                     }
-                    value={signupinputs.namesingup}
+                    value={signupinputs.name}
                     type="text"
                   />
                   <input
@@ -131,10 +133,10 @@ const SignupCard = () => {
                     onChange={(e) =>
                       setInputsforsingup({
                         ...signupinputs,
-                        usernamesingup: e.target.value,
+                        username: e.target.value,
                       })
                     }
-                    value={signupinputs.usernamesingup}
+                    value={signupinputs.username}
                     type="text"
                   />
                   <input
@@ -144,10 +146,10 @@ const SignupCard = () => {
                     onChange={(e) =>
                       setInputsforsingup({
                         ...signupinputs,
-                        emailsingup: e.target.value,
+                        email: e.target.value,
                       })
                     }
-                    value={signupinputs.emailsingup}
+                    value={signupinputs.email}
                     type="email"
                   />
 
@@ -158,10 +160,10 @@ const SignupCard = () => {
                     onChange={(e) =>
                       setInputsforsingup({
                         ...signupinputs,
-                        passwordsingup: e.target.value,
+                        password: e.target.value,
                       })
                     }
-                    value={signupinputs.passwordsingup}
+                    value={signupinputs.password}
                     type="password"
                   />
                   <button className="flip-card__btn" type="submit">
