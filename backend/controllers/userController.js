@@ -160,8 +160,14 @@ const updateUser = async (req, res) => {
       }
 
       // console.log("profile pic: ", profilePic);
-      const uploadedResponse = await cloudinary.uploader.upload(profilePic);
-      profilePic = uploadedResponse.secure_url;
+      try {
+        const uploadedResponse = await cloudinary.uploader.upload(profilePic);
+        profilePic = uploadedResponse.secure_url;
+      } catch (err) {
+        res.status(413).json({ error: err.message });
+        console.log("Error inside updateuser/uploadimg: ", err);
+        return;
+      }
 
       // console.log("profile pic: ", profilePic);
     }

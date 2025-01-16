@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import bodyParser from "body-parser";
 import connectDB from "./db/connectDB.js";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
@@ -19,6 +20,10 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
+
+//
 app.use(express.json()); //To parse json data in the req.body
 app.use(express.urlencoded({ extended: true })); //To parse data in req.body
 app.use(cookieParser());
