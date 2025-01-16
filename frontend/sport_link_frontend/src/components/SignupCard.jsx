@@ -30,7 +30,7 @@ const SignupCard = () => {
         body: JSON.stringify(logininputs),
       });
       const data = await res.json();
-      console.log(data);
+      console.log("data after login: ", data);
       if (data.error) {
         showToast("Error", data.error, "error");
         return;

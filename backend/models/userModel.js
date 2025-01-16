@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema(
       required: true,
     },
     profilePic: {
-      type: [String],
+      type: String,
       default: "",
     },
     followers: {
@@ -31,6 +31,10 @@ const userSchema = mongoose.Schema(
     bio: {
       type: String,
       default: "",
+    },
+    email: {
+      type: String,
+      dafault: "",
     },
   },
   { timestamps: true }
