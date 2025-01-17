@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import "./App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Container } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 import Userpage from "./pages/UserPage";
 import Postpage from "./pages/postPage";
 import Header from "./components/Header";
@@ -11,11 +11,14 @@ import userAtom from "./atoms/userAtom";
 import { useRecoilValue } from "recoil";
 import UpdateProfilePage from "./pages/UpdateProfilePage";
 import CreatePost from "./components/CreatePost";
+import ChatPage from "./pages/ChatPage";
 
 function App() {
   const user = useRecoilValue(userAtom);
   console.log(user);
   return (
+    <Box position={"relative"} w="full">
+
     <Container maxW="620px">
       <Header />
 
@@ -23,15 +26,15 @@ function App() {
         <Route
           path="/"
           element={user ? <HomePage /> : <Navigate to="/auth" />}
-        />
+          />
         <Route
           path="/auth"
           element={!user ? <AuthPage /> : <Navigate to="/" />}
-        />
+          />
         <Route
           path="/update"
           element={user ? <UpdateProfilePage /> : <Navigate to={"/auth"} />}
-        />
+          />
         <Route
           path="/:username"
           element={
@@ -44,13 +47,18 @@ function App() {
               <Userpage />
             )
           }
-        />
+          />
         <Route
           path="/:username/post/:pid"
           element={user ? <Postpage /> : <Navigate to={"/auth"} />}
         />
+         <Route
+          path='/chat'
+          element={user ? <ChatPage /> : <Navigate to={"/auth"} />}
+          />
       </Routes>
     </Container>
+    </Box>
   );
 }
 

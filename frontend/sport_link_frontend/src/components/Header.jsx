@@ -6,6 +6,7 @@ import { AiFillHome } from "react-icons/ai";
 import { RxAvatar } from "react-icons/rx";
 import { FiLogOut } from "react-icons/fi";
 import useLogout from "../hooks/useLogout";
+import {BsFillChatQuoteFill} from "react-icons/bs";
 
 //header main component
 const Header = () => {
@@ -33,6 +34,9 @@ const Header = () => {
         <Flex alignItems={"center"} gap={4}>
           <Link to={`/${user.username}`}>
             <RxAvatar size={24} />
+          </Link>
+          <Link to={"/chat"}>
+            <BsFillChatQuoteFill size={20} />
           </Link>
           <Button size={"xs"} onClick={logout}>
             <FiLogOut size={20} />
