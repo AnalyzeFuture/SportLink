@@ -19,7 +19,7 @@ const UserHeader = ({ user }) => {
   const toast = useToast();
   const currentUser = useRecoilValue(userAtom); //this is logged in user
   const [following, setFollowing] = useState(
-    user.followers.includes(currentUser._id)
+    user.followers.includes(currentUser?._id)
   );
   const [updating, setUpdating] = useState(false);
 
@@ -49,7 +49,7 @@ const UserHeader = ({ user }) => {
         user.followers.pop(); //Only updates user on the client side
       } else {
         showToast("Success", `Followed ${user.name}`, "success");
-        user.followers.push(currentUser._id); // Only updates user on the client side
+        user.followers.push(currentUser?._id); // Only updates user on the client side
       }
 
       setFollowing(!following);
@@ -117,12 +117,12 @@ const UserHeader = ({ user }) => {
         </Box>
       </Flex>
       <Text>{user.bio}</Text>
-      {currentUser._id === user._id && (
+      {currentUser?._id === user._id && (
         <Link to="/update">
           <Button size={"sm"}>Update Profile</Button>
         </Link>
       )}
-      {currentUser._id !== user._id && (
+      {currentUser?._id !== user._id && (
         <Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>
           {following ? "UnFollow" : "Follow"}
         </Button>
