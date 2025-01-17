@@ -3,6 +3,7 @@ import styled from "styled-components";
 import useShowToast from "../hooks/useShowToast";
 import { useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
+import { Spinner } from "@chakra-ui/react";
 
 const SignupCard = () => {
   const [logininputs, setInputsforlogin] = useState({
@@ -17,10 +18,11 @@ const SignupCard = () => {
   });
   const showToast = useShowToast();
   const setUser = useSetRecoilState(userAtom);
-
+  const [loading, setLoading] = useState(false);
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log(logininputs);
+    setLoading(true);
     try {
       const res = await fetch("/api/users/login", {
         method: "POST",
@@ -39,6 +41,8 @@ const SignupCard = () => {
       setUser(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   const handleSignup = async (e) => {
@@ -48,6 +52,7 @@ const SignupCard = () => {
     //   return;
     // }
     console.log("signup inputs: ", signupinputs);
+    setLoading(true);
     try {
       const res = await fetch("/api/users/signup", {
         method: "POST",
@@ -67,6 +72,8 @@ const SignupCard = () => {
       setUser(data);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -108,7 +115,9 @@ const SignupCard = () => {
                     }
                     type="password"
                   />
-                  <button className="flip-card__btn">Let`s go!</button>
+                  <button className="flip-card__btn">
+                    {loading ? <Spinner size={"l"} /> : "Let`s go!"}
+                  </button>
                 </form>
               </div>
               <div className="flip-card__back">
