@@ -135,10 +135,10 @@ const replyToPost = async (req, res) => {
 };
 
 const getFeedPosts = async (req, res) => {
-  console.log("fdes");
+  // console.log("fdes");
   try {
     const userId = req.user._id;
-
+    console.log("getFeedPosts user ID: ", req.user._id);
     const user = await User.findById(userId);
     if (!user) {
       return res.status(400).json({ error: "User not found" });
@@ -148,10 +148,10 @@ const getFeedPosts = async (req, res) => {
       createdAt: -1,
     });
 
-    res.status(200).json({ feedPosts });
+    res.status(200).json(feedPosts);
   } catch (err) {
     res.status(500).json({ error: err.message });
-    console.log("Error in getFeedPosts: ", err);
+    console.log("Error in getFeedPosts: ", err.message);
   }
 };
 export {

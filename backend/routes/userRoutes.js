@@ -11,7 +11,7 @@ import protectRoute from "../middleware/protectRoute.js";
 //updated routes
 const router = express.Router();
 
-router.get("/profile/:username", getUserProfile);
+router.get("/profile/:query", getUserProfile);
 router.post("/signup", signupUser); //signup route
 router.post("/login", loginUser); // login route
 router.post("/logout", logoutUser);
