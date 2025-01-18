@@ -36,7 +36,10 @@ const ChatPage = () => {
           showToast("Error", data.error, "error");
           return;
         }
-        console.log(data);
+        console.log(
+          "data of conversations just before initializing conversation inside get conversations:\n",
+          data
+        );
         setConversations(data);
       } catch (error) {
         showToast("Error", error.message, "error");

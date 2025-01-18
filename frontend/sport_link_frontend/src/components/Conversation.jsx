@@ -23,7 +23,7 @@ const Conversation = ({ conversation }) => {
   const [selectedConversation, setSelectedConversation] = useRecoilState(
     selectedConversationAtom
   );
-  console.log("selectedConverstation", selectedConversation);
+  // console.log("selectedConverstation", selectedConversation);
   return (
     <Flex
       gap={4}

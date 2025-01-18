@@ -41,6 +41,7 @@ const MessageContainer = () => {
           showToast("Error", data.error, "error");
           return;
         }
+        // console.log("data inside get messages: ", data);
         setMessages(data);
       } catch (error) {
         showToast("Error", error.message, "error");
@@ -95,7 +96,7 @@ const MessageContainer = () => {
             </Flex>
           ))}
         {!loadingMessages &&
-          messages.map((message) => (
+          messages?.map((message) => (
             <Message
               message={message}
               key={message._id}
