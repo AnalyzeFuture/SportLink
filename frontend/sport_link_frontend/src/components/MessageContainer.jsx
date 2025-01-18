@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-binary-expression */
 import {
   Avatar,
   Divider,

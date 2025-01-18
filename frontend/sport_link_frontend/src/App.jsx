@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import "./App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Box, Container } from "@chakra-ui/react";
@@ -18,46 +17,45 @@ function App() {
   console.log(user);
   return (
     <Box position={"relative"} w="full">
+      <Container maxW="620px">
+        <Header />
 
-    <Container maxW="620px">
-      <Header />
-
-      <Routes>
-        <Route
-          path="/"
-          element={user ? <HomePage /> : <Navigate to="/auth" />}
+        <Routes>
+          <Route
+            path="/"
+            element={user ? <HomePage /> : <Navigate to="/auth" />}
           />
-        <Route
-          path="/auth"
-          element={!user ? <AuthPage /> : <Navigate to="/" />}
+          <Route
+            path="/auth"
+            element={!user ? <AuthPage /> : <Navigate to="/" />}
           />
-        <Route
-          path="/update"
-          element={user ? <UpdateProfilePage /> : <Navigate to={"/auth"} />}
+          <Route
+            path="/update"
+            element={user ? <UpdateProfilePage /> : <Navigate to={"/auth"} />}
           />
-        <Route
-          path="/:username"
-          element={
-            user ? (
-              <>
-                <CreatePost />
-                <Userpage />
-              </>
-            ) : (
-              <Userpage />
-            )
-          }
+          <Route
+            path="/:username"
+            element={
+              user ? (
+                <>
+                  <CreatePost />
+                  <Userpage />
+                </>
+              ) : (
+                <Navigate to={"/auth"} />
+              )
+            }
           />
-        <Route
-          path="/:username/post/:pid"
-          element={user ? <Postpage /> : <Navigate to={"/auth"} />}
-        />
-         <Route
-          path='/chat'
-          element={user ? <ChatPage /> : <Navigate to={"/auth"} />}
+          <Route
+            path="/:username/post/:pid"
+            element={user ? <Postpage /> : <Navigate to={"/auth"} />}
           />
-      </Routes>
-    </Container>
+          <Route
+            path="/chat"
+            element={user ? <ChatPage /> : <Navigate to={"/auth"} />}
+          />
+        </Routes>
+      </Container>
     </Box>
   );
 }
