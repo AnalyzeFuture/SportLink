@@ -1,5 +1,6 @@
 import Conversation from "../models/conversationModel.js";
 import Message from "../models/messageModel.js";
+import { getRecipientSocketId, io } from "../socket/socket.js";
 
 const sendMessage = async (req, res) => {
   try {
@@ -40,7 +41,12 @@ const sendMessage = async (req, res) => {
       }),
     ]);
 
-    res.status(200).json(newMessage);
+    const receipientSocketId = getRecipientSocketId(recipientId);
+    if (receipientSocketId) {
+      io.to(receipientSocketId).emit("newMessage", newMessage);
+    }
+
+    res.status(201).json(newMessage);
   } catch (error) {
     res.status(500).json({ error: error.message });
     console.log("Error in messageController: ", error);
@@ -65,12 +71,12 @@ const getMessages = async (req, res) => {
       conversationId: conversation._id,
     }).sort({ createdAt: 1 });
 
-    if (!messages) return res.status(404).json({ error: "messages not found" });
+    // if (!messages) return res.status(404).json({ error: "messages not found" });
 
     res.status(200).json(messages);
   } catch (error) {
     res.status(500).json({ error: error.message });
-    console.log("Error inside the getMessages: ", error);
+    // console.log("Error inside the getMessages: ", error);
   }
 };
 

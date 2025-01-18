@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Box,
   Button,
@@ -20,6 +21,7 @@ import {
   selectedConversationAtom,
 } from "../atoms/messageAtom";
 import userAtom from "../atoms/userAtom";
+import { useSocket } from "../context/SocketContext";
 
 const ChatPage = () => {
   const [loadingConversations, setLoadingConversations] = useState(true);
@@ -30,6 +32,7 @@ const ChatPage = () => {
   const [SearchText, setSearchText] = useState("");
   const [searchingUser, setSearchingUser] = useState(false);
   const currentUser = useRecoilValue(userAtom);
+  const { socket, onlineUsers } = useSocket();
   const showToast = useShowToast();
   useEffect(() => {
     const getConversations = async () => {
@@ -173,6 +176,9 @@ const ChatPage = () => {
             conversations.map((conversation) => (
               <Conversation
                 key={conversation._id}
+                isOnline={onlineUsers.includes(
+                  conversation.participants[0]._id
+                )}
                 conversation={conversation}
               />
             ))}
