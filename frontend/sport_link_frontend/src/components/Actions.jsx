@@ -21,7 +21,6 @@ import useShowToast from "../hooks/useShowToast";
 import PropTypes from "prop-types";
 import postsAtom from "../atoms/postAtom";
 
-// eslint-disable-next-line react/prop-types
 const Action = ({ post }) => {
   const user = useRecoilValue(userAtom);
   const [liked, setLiked] = useState(post.likes.includes(user?._id));

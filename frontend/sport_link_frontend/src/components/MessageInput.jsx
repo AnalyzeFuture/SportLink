@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { InputGroup, Input, InputRightElement } from "@chakra-ui/react";
 import { useState } from "react";
 import { IoSendSharp } from "react-icons/io5";
@@ -7,7 +8,6 @@ import {
   conversationsAtom,
   selectedConversationAtom,
 } from "../atoms/messageAtom";
-import Conversation from "./Conversation";
 
 const MessageInput = ({ setMessages }) => {
   const [messageText, setMessageText] = useState("");

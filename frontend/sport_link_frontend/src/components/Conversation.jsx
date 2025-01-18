@@ -23,7 +23,7 @@ const Conversation = ({ conversation }) => {
   const [selectedConversation, setSelectedConversation] = useRecoilState(
     selectedConversationAtom
   );
-  // console.log("selectedConverstation", selectedConversation);
+  console.log("selectedConverstation", selectedConversation);
   return (
     <Flex
       gap={4}
@@ -40,7 +40,7 @@ const Conversation = ({ conversation }) => {
           userId: user._id,
           userProfilePic: user.profilePic,
           username: user.username,
-          //   mock: conversation.mock,
+          mock: conversation.mock,
         })
       }
       bg={

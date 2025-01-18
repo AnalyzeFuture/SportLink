@@ -1,4 +1,6 @@
-/* eslint-disable no-constant-binary-expression */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+
 import {
   Avatar,
   Divider,
@@ -13,10 +15,7 @@ import Message from "./Message";
 import MessageInput from "./MessageInput";
 import { useEffect, useState } from "react";
 
-import {
-  conversationsAtom,
-  selectedConversationAtom,
-} from "../atoms/messageAtom";
+import { selectedConversationAtom } from "../atoms/messageAtom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
@@ -28,13 +27,13 @@ const MessageContainer = () => {
   );
   const [loadingMessages, setLoadingMessages] = useState(true);
   const [messages, setMessages] = useState([]);
-  // const setConversations = useSetRecoilState(conversationsAtom);
   const currentUser = useRecoilValue(userAtom);
   useEffect(() => {
     const getMessages = async () => {
       setLoadingMessages(true);
       setMessages([]);
       try {
+        if (selectedConversation.mock) return;
         const res = await fetch(`/api/messages/${selectedConversation.userId}`);
         const data = await res.json();
         if (data.error) {
