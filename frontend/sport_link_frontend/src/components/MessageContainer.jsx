@@ -11,8 +11,45 @@ import {
 } from "@chakra-ui/react";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
+import { useEffect, useState } from "react";
+
+import {
+  conversationsAtom,
+  selectedConversationAtom,
+} from "../atoms/messageAtom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import useShowToast from "../hooks/useShowToast";
+import userAtom from "../atoms/userAtom";
 
 const MessageContainer = () => {
+  const showToast = useShowToast();
+  const [selectedConversation, setSelectedConversation] = useRecoilState(
+    selectedConversationAtom
+  );
+  const [loadingMessages, setLoadingMessages] = useState(true);
+  const [messages, setMessages] = useState([]);
+  // const setConversations = useSetRecoilState(conversationsAtom);
+  const currentUser = useRecoilValue(userAtom);
+  useEffect(() => {
+    const getMessages = async () => {
+      setLoadingMessages(true);
+      setMessages([]);
+      try {
+        const res = await fetch(`/api/messages/${selectedConversation.userId}`);
+        const data = await res.json();
+        if (data.error) {
+          showToast("Error", data.error, "error");
+          return;
+        }
+        setMessages(data);
+      } catch (error) {
+        showToast("Error", error.message, "error");
+      } finally {
+        setLoadingMessages(false);
+      }
+    };
+    getMessages();
+  }, [showToast, selectedConversation.userId]);
   return (
     <Flex
       flex="70"
@@ -23,9 +60,10 @@ const MessageContainer = () => {
     >
       {/* Message header */}
       <Flex w={"full"} h={12} alignItems={"center"} gap={2}>
-        <Avatar src="" size={"sm"} />
+        <Avatar src={selectedConversation.userProfilePic} size={"sm"} />
         <Text display={"flex"} alignItems={"center"}>
-          johndoe <Image src="/verified.png" w={4} h={4} ml={1} />
+          {selectedConversation.username}
+          <Image src="/verified.png" w={4} h={4} ml={1} />
         </Text>
       </Flex>
       <Divider />
@@ -37,7 +75,7 @@ const MessageContainer = () => {
         height={"400px"}
         overflowY={"auto"}
       >
-        {false &&
+        {loadingMessages &&
           [...Array(5)].map((_, i) => (
             <Flex
               key={i}
@@ -56,16 +94,16 @@ const MessageContainer = () => {
               {i % 2 === 0 && <SkeletonCircle size={7} />}
             </Flex>
           ))}
-        <Message ownMessage={true} />
-        <Message ownMessage={false} />
-        <Message ownMessage={true} />
-        <Message ownMessage={false} />
-        <Message ownMessage={true} />
-        <Message ownMessage={false} />
-        <Message ownMessage={true} />
-        <Message ownMessage={false} />
+        {!loadingMessages &&
+          messages.map((message) => (
+            <Message
+              message={message}
+              key={message._id}
+              ownMessage={currentUser._id === message.sender}
+            />
+          ))}
       </Flex>
-      <MessageInput />
+      <MessageInput setMessages={setMessages} />
     </Flex>
   );
 };

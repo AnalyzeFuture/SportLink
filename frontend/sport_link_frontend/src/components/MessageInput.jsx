@@ -1,7 +1,7 @@
 import { InputGroup, Input, InputRightElement } from "@chakra-ui/react";
 import { IoSendSharp } from "react-icons/io5";
 
-const MessageInput = () => {
+const MessageInput = ({ setMessages }) => {
   return (
     <form>
       <InputGroup>
