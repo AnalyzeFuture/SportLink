@@ -11,6 +11,7 @@ import { useRecoilValue } from "recoil";
 import UpdateProfilePage from "./pages/UpdateProfilePage";
 import CreatePost from "./components/CreatePost";
 import ChatPage from "./pages/ChatPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   const user = useRecoilValue(userAtom);
@@ -53,6 +54,10 @@ function App() {
           <Route
             path="/chat"
             element={user ? <ChatPage /> : <Navigate to={"/auth"} />}
+          />
+          <Route
+            path="/search"
+            element={user ? <SearchPage /> : <Navigate to={"/auth"} />}
           />
         </Routes>
       </Container>

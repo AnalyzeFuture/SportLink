@@ -86,6 +86,8 @@ const CreatePost = () => {
       setImgUrl("");
     } catch (error) {
       showToast("Error", error, "error");
+    } finally {
+      setLoading(false);
     }
   };
   return (

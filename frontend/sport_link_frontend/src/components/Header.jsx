@@ -7,6 +7,7 @@ import { RxAvatar } from "react-icons/rx";
 import { FiLogOut } from "react-icons/fi";
 import useLogout from "../hooks/useLogout";
 import { IoIosChatbubbles } from "react-icons/io";
+import { LuSearch } from "react-icons/lu";
 
 //header main component
 const Header = () => {
@@ -32,6 +33,9 @@ const Header = () => {
       />
       {user && (
         <Flex alignItems={"center"} gap={4}>
+          <Link to={`/search`}>
+            <LuSearch size={24} />
+          </Link>
           <Link to={`/${user.username}`}>
             <RxAvatar size={24} />
           </Link>

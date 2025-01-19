@@ -222,6 +222,32 @@ const updateUser = async (req, res) => {
   }
 };
 
+const searchUsers = async (req, res) => {
+  try {
+    const searchText = req.body.searchText;
+    console.log("searchUser searchText: ", req.body.searchText);
+
+    const query = {
+      $or: [
+        { name: { $regex: searchText, $options: "i" } },
+        { username: { $regex: searchText, $options: "i" } },
+      ],
+    };
+    const result = await User.find(query)
+      .select("username profilePic followers")
+      .limit(25);
+
+    if (!result || result.length === 0) {
+      return res.status(400).json({ error: "User not found" });
+    }
+
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+    console.log("Error in searchUsers: ", err.message);
+  }
+};
+
 export {
   signupUser,
   loginUser,
@@ -229,4 +255,5 @@ export {
   followUnFollowUser,
   updateUser,
   getUserProfile,
+  searchUsers,
 };
