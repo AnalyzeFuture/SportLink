@@ -17,28 +17,32 @@ const postSchema = mongoose.Schema(
     likes: {
       //array of user ids
       type: [mongoose.Schema.Types.ObjectId],
-			ref: "User",
-			default: [],
+      ref: "User",
+      default: [],
     },
-    replies:
-    [ {
-      userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
-      text: {
-        type: String,
-        required: true,
-      },
-      userProfilePic: {
-        type: String,
-      },
-      username: {
-        type: String,
-      },
+    hashtags: {
+      type: [String], // Array of hashtags
+      default: [],
     },
-  ],
+    replies: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        text: {
+          type: String,
+          required: true,
+        },
+        userProfilePic: {
+          type: String,
+        },
+        username: {
+          type: String,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

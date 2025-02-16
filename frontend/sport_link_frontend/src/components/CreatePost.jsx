@@ -35,6 +35,7 @@ const CreatePost = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [postText, setPostText] = useState("");
   const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
+  const [hashtags, setHashtags] = useState(""); // New state for hashtags
   const imageRef = useRef(null);
   const [remainingChar, setRemainingChar] = useState(MAX_CHAR);
   const user = useRecoilValue(userAtom);
@@ -56,6 +57,16 @@ const CreatePost = () => {
     }
   };
 
+  const handleHashtagChange = (e) => {
+    const inputHashtags = e.target.value;
+    const formattedHashtags = inputHashtags
+      .split(" ")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.startsWith("#")); // Ensure only valid hashtags are included
+
+    setHashtags(formattedHashtags.join(" "));
+  };
+
   const handleCreatePost = async () => {
     setLoading(true);
     try {
@@ -68,6 +79,7 @@ const CreatePost = () => {
           postedBy: user._id,
           text: postText,
           img: imgUrl,
+          hashtags: hashtags.split(" "),
         }),
       });
 
@@ -126,6 +138,13 @@ const CreatePost = () => {
               >
                 {remainingChar}/500
               </Text>
+
+              <Input
+                placeholder="Add hashtags (e.g. #sports #training)"
+                value={hashtags}
+                onChange={handleHashtagChange}
+                mt={3}
+              />
 
               <Input
                 type="file"

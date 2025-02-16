@@ -4,7 +4,9 @@ import { v2 as cloudinary } from "cloudinary";
 const createPost = async (req, res) => {
   try {
     const { postedBy, text } = req.body;
-    let { img } = req.body;
+    let { img, hashtags } = req.body;
+    // console.log("hashtags : ", hashtags);
+    // let { img } = req.body;
     if (!postedBy || !text) {
       return res
         .status(400)
@@ -27,13 +29,22 @@ const createPost = async (req, res) => {
         .json({ error: `Text must be less than ${maxLength} characters` });
     }
 
+    // Extract hashtags from the text
+    // const extractedHashtags = (await hashtags.match(/#\w+/g)) || [];
+
     if (img) {
       const uploadedResponse = await cloudinary.uploader.upload(img);
       img = uploadedResponse.secure_url;
       // console.log("img url in create post: ", img);
     }
 
-    const newPost = new Post({ postedBy, text, img });
+    const newPost = new Post({
+      postedBy,
+      text,
+      img,
+      hashtags,
+      // hashtags: extractedHashtags,
+    });
     await newPost.save();
 
     res.status(201).json(newPost);
