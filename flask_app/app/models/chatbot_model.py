@@ -29,19 +29,38 @@ class ChatbotModel:
 
         # Define the prompt template
         template = """
-        You are an AI-powered chatbot designed to provide 
-        information and assistance for customers
-        based on the context provided to you only. 
+        You are an AI assistant with expertise in various domains.
+        Whenever possible, answer questions based on the given context.
+        If the context does not provide enough information, use your own knowledge to respond. 
                 
         Context: {context}
-        Question: {question}
+        Question: {userQuery}
+
+        Answer:
         """
         self.prompt = PromptTemplate.from_template(template=template)
 
         # Create the retrieval and generation pipeline
-        result = RunnableParallel(context=self.retriever, question=RunnablePassthrough())
-        self.chain = result | self.prompt | self.ollama_llm | self.parser
+    #     result = RunnableParallel(context=self.retriever, userQuery=RunnablePassthrough())
+    #     self.chain = result | self.prompt | self.ollama_llm | self.parser
 
-    def get_response(self, question):
-        """Invokes the chatbot model with the given question."""
-        return self.chain.invoke(question)
+    # def get_response(self, userQuery):
+    #     """Invokes the chatbot model with the given userQuery."""
+    #     return self.chain.invoke(userQuery)
+
+    def get_response(self, userQuery):
+        try:
+            # Retrieve relevant context
+            relevant_docs = self.retriever.get_relevant_documents(userQuery)
+            context_text = "\n".join([doc.page_content for doc in relevant_docs]) if relevant_docs else "No relevant context available."
+
+            # Format prompt correctly
+            formatted_prompt = self.prompt.format(context=context_text, userQuery=userQuery)
+
+            # Generate response using correct method
+            response = self.ollama_llm(formatted_prompt)
+
+            return response
+        except Exception as e:
+            print("Error:", str(e))
+            return "An error occurred while generating a response."
