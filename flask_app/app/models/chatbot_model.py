@@ -1,17 +1,17 @@
 import os
-from langchain_community.llms import Ollama
+from langchain_ollama import OllamaLLM  # Updated import
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings  # Updated import
 from langchain_community.vectorstores import FAISS
 from langchain_core.runnables import RunnablePassthrough, RunnableParallel
 
 class ChatbotModel:
     def __init__(self):
         # Initialize the LLM
-        self.ollama_llm = Ollama(model='llama3.2')
+        self.ollama_llm = OllamaLLM(model='llama3.2')  # Updated class
 
         # Create output parser
         self.parser = StrOutputParser()
@@ -23,7 +23,7 @@ class ChatbotModel:
         chunks = spliter.split_documents(document)
 
         # Initialize the embedding model and vector store
-        embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+        embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")  # Updated class
         vector_storage = FAISS.from_documents(chunks, embedding_model)
         self.retriever = vector_storage.as_retriever()
 

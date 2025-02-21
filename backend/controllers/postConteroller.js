@@ -189,6 +189,29 @@ const getUserPosts = async (req, res) => {
   }
 };
 
+const getAllPosts = async (req, res) => {
+  try {
+    console.log("request received");
+
+    const posts = await Post.find(
+      {},
+      { replies: 0, img: 0, postedBy: 0, createdAt: 0, updatedAt: 0, __v: 0 }
+    )
+      .sort({ createdAt: -1 })
+      .lean(); // Use `.lean()` to return plain JavaScript objects instead of Mongoose documents
+
+    // Add likesCount to each post
+    const modifiedPosts = posts.map((post) => ({
+      ...post,
+      likesCount: post.likes.length, // Calculate likes count
+    }));
+
+    res.status(200).json(modifiedPosts);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export {
   createPost,
   getPost,
@@ -197,4 +220,5 @@ export {
   replyToPost,
   getFeedPosts,
   getUserPosts,
+  getAllPosts,
 };
