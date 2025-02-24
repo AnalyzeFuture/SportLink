@@ -1,6 +1,8 @@
 import User from "../models/userModel.js";
 import Post from "../models/postModel.js";
 import { v2 as cloudinary } from "cloudinary";
+// import fetch from "node-fetch"; // Add this import
+
 const createPost = async (req, res) => {
   try {
     const { postedBy, text } = req.body;
@@ -113,7 +115,38 @@ const likeUnlikePost = async (req, res) => {
       // Like post
       post.likes.push(userId);
       await post.save();
-      res.status(200).json({ message: "Post liked successfully" });
+
+      // Fetch recommended posts
+      try {
+        const response = await fetch(
+          "http://127.0.0.1:8080/api/recommendations",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ post_id: postId }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch recommendations");
+        }
+
+        const recommendations = await response.json();
+
+        // Populate the recommendations with actual posts
+        const recommendedPosts = await Post.find({
+          _id: { $in: recommendations },
+        });
+
+        res
+          .status(200)
+          .json({ message: "Post liked successfully", recommendedPosts });
+      } catch (fetchError) {
+        console.error("Error fetching recommendations: ", fetchError);
+        res.status(500).json({ error: "Failed to fetch recommendations" });
+      }
     }
   } catch (err) {
     res.status(500).json({ error: err.message });

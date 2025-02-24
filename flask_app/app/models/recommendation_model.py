@@ -33,6 +33,8 @@ def get_recommendations_from_model(post_id, likes_weight=0.7, content_weight=0.3
     # Convert hashtags list to string before concatenating, handle non-list values
     df['combined'] = df['text'] + ' ' + df['hashtags'].apply(lambda x: ' '.join(x) if isinstance(x, list) else '')
 
+
+    print(df.head())
     # TF-IDF Vectorizer
     tfidf = TfidfVectorizer(stop_words='english')
     tfidf_matrix = tfidf.fit_transform(df['combined'])
