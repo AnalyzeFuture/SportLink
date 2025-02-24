@@ -9,9 +9,10 @@ import {
   Text,
   Avatar,
   Divider,
-  useColorModeValue,
   Spinner,
 } from "@chakra-ui/react";
+import { GoDependabot } from "react-icons/go";
+
 import { IoSendSharp } from "react-icons/io5";
 import { FaRobot } from "react-icons/fa";
 
@@ -23,8 +24,11 @@ const Chatbot = () => {
   const [fetchingResponse, setFetchingResponse] = useState(false);
 
   // Fix: useColorModeValue is called at the top level
-  const bgColor = useColorModeValue("white", "gray.700");
-  const textColor = useColorModeValue("black", "white");
+  const bgColor = "#181C14";
+  const textColor = "#3C3D37";
+  const paragraphColor = "#F0F0F0";
+  const buttonBgColor = "#FFBD73";
+  const buttonTextColor = "#3C3D37";
 
   // Toggle chatbot visibility
   const toggleChatbot = () => setIsOpen(!isOpen);
@@ -78,7 +82,8 @@ const Chatbot = () => {
         borderRadius="full"
         p={4}
         onClick={toggleChatbot}
-        colorScheme="blue"
+        bg={buttonBgColor}
+        color={buttonTextColor}
       >
         <FaRobot size={24} />
       </Button>
@@ -101,8 +106,10 @@ const Chatbot = () => {
           {/* Chat header */}
           <Flex alignItems="center" justifyContent="space-between" mb={2}>
             <Flex alignItems="center" gap={2}>
-              <Avatar size="sm" name="Chatbot" />
-              <Text fontWeight="bold">Chatbot</Text>
+              <Avatar size="sm" icon={<GoDependabot />} />
+              <Text fontWeight="bold" color={textColor}>
+                Chatbot
+              </Text>
             </Flex>
             <Button size="xs" onClick={toggleChatbot}>
               ✖
@@ -116,8 +123,8 @@ const Chatbot = () => {
               <Flex
                 key={index}
                 alignSelf={msg.sender === "user" ? "flex-end" : "flex-start"}
-                bg={msg.sender === "user" ? "blue.500" : "gray.500"}
-                color="white"
+                bg={msg.sender === "user" ? buttonBgColor : paragraphColor}
+                color={msg.sender === "user" ? buttonTextColor : textColor}
                 p={2}
                 borderRadius="md"
                 maxW="80%"
@@ -142,6 +149,9 @@ const Chatbot = () => {
                   placeholder="Type a message..."
                   value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
+                  bg={paragraphColor}
+                  color={textColor}
+                  _placeholder={{ color: "black" }}
                 />
                 {fetchingResponse ? (
                   <Spinner />
@@ -150,7 +160,7 @@ const Chatbot = () => {
                     onClick={handleSubmitMessage}
                     cursor="pointer"
                   >
-                    <IoSendSharp color="green.500" />
+                    <IoSendSharp color={buttonTextColor} />
                   </InputRightElement>
                 )}
               </InputGroup>
