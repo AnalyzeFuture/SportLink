@@ -3,10 +3,15 @@ import useShowToast from "../hooks/useShowToast";
 import { useEffect, useState } from "react";
 import Post from "../components/Post";
 import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
+import userAtom from "../atoms/userAtom";
+import { Box } from "@chakra-ui/react";
 import postsAtom from "../atoms/postAtom";
+import ProfileSidebar from "../components/ProfileSidebar";
 
 const HomePage = () => {
   const [posts, setPosts] = useRecoilState(postsAtom);
+  const user = useRecoilValue(userAtom);
   const [loading, setLoading] = useState(true);
   const showToast = useShowToast();
   useEffect(() => {
@@ -32,6 +37,11 @@ const HomePage = () => {
   }, [showToast, setPosts]);
   return (
     <>
+      <Box flex="1" w={250} left={40} position={"fixed"}>
+        {" "}
+        {/* Sidebar width */}
+        <ProfileSidebar user={user} />
+      </Box>{" "}
       {loading && (
         <Flex justify={"center"}>
           <Spinner size={"xl"} />
