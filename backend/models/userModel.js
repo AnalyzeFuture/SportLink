@@ -36,6 +36,37 @@ const userSchema = mongoose.Schema(
       type: String,
       dafault: "",
     },
+    sportsParticipation: [
+      {
+        year: Number,
+        numberOfCompetitions: Number,
+        numberOfGamesWon: Number,
+        level: {
+          type: String,
+          enum: ["District", "State", "National", "International"],
+        },
+      },
+    ],
+    lovedSport: {
+      type: String,
+      default: "",
+    },
+    experience: {
+      type: String,
+      default: "",
+    },
+    achievements: {
+      type: String,
+      default: "",
+    },
+    bmi: {
+      type: String,
+      default: "",
+    },
+    preferredTime: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );

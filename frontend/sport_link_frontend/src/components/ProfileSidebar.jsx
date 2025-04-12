@@ -47,12 +47,12 @@ const ProfileSidebar = () => {
         <Text fontWeight="bold" fontSize="md">
           {user?.name || "User Name"}
         </Text>
-        <Text fontSize="small" color="gray.600">
-          {user?.bio || "Passionate Programmer | Developer"}
+        <Text fontSize="small" color="white.400">
+          {user?.bio}
         </Text>
         <Box mt={4} textAlign="left">
           <Link display="flex" alignItems="center" gap={2} color="blue.500">
-            <FaEye /> <Text>followers: {currentUser?.followers.length} </Text>
+            <FaEye /> <Text>followers: {currentUser?.followers?.length} </Text>
           </Link>
           <Link
             display="flex"

@@ -24,7 +24,7 @@ const Chatbot = () => {
   const [fetchingResponse, setFetchingResponse] = useState(false);
 
   // Fix: useColorModeValue is called at the top level
-  const bgColor = "#181C14";
+  const bgColor = "#2C2C2C";
   const textColor = "#3C3D37";
   const paragraphColor = "#F0F0F0";
   const buttonBgColor = "#FFBD73";
@@ -93,7 +93,7 @@ const Chatbot = () => {
         <Box
           position="fixed"
           bottom="80px"
-          right="20px"
+          right="5px"
           w={{ base: "95%", md: "450px" }} // Increased width
           h={{ base: "500px", md: "550px" }} // Added and increased height
           bg={bgColor}
@@ -107,7 +107,7 @@ const Chatbot = () => {
           <Flex alignItems="center" justifyContent="space-between" mb={2}>
             <Flex alignItems="center" gap={2}>
               <Avatar size="sm" icon={<GoDependabot />} />
-              <Text fontWeight="bold" color={textColor}>
+              <Text fontWeight="bold" color="white">
                 Chatbot
               </Text>
             </Flex>
