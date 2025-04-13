@@ -147,10 +147,23 @@ const followUnFollowUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { name, email, username, password, bio } = req.body;
+  const {
+    name,
+    email,
+    username,
+    password,
+    bio,
+    lovedSport,
+    experience,
+    currentLevel,
+    district,
+    state,
+    participationData,
+  } = req.body;
   let { profilePic } = req.body;
   const userId = req.user._id;
 
+  console.log("updateUser: ", req.body);
   try {
     let user = await User.findById(userId);
     if (!user) return res.status(400).json({ error: "User not found" });
@@ -158,7 +171,7 @@ const updateUser = async (req, res) => {
     if (req.params.id !== userId.toString())
       return res
         .status(400)
-        .json({ error: "you cannot update other users profile" });
+        .json({ error: "You cannot update another user's profile" });
 
     if (password) {
       const salt = await bcrypt.genSalt(10);
@@ -166,20 +179,14 @@ const updateUser = async (req, res) => {
       user.password = hashedPassword;
     }
 
-    // console.log("profile pic: ", profilePic);
     if (profilePic) {
       if (user.profilePic) {
-        // console.log("user.profile pic: ", user.profilePic);
         await cloudinary.uploader.destroy(
           user.profilePic.split("/").pop().split(".")[0]
         );
       }
-
-      // console.log("profile pic: ", profilePic);
       const uploadedResponse = await cloudinary.uploader.upload(profilePic);
       profilePic = uploadedResponse.secure_url;
-
-      // console.log("profile pic: ", profilePic);
     }
 
     user.name = name || user.name;
@@ -187,35 +194,23 @@ const updateUser = async (req, res) => {
     user.username = username || user.username;
     user.profilePic = profilePic || user.profilePic;
     user.bio = bio || user.bio;
+    user.lovedSport = lovedSport || user.lovedSport;
+    user.experience = experience || user.experience;
+    user.district = district || user.district;
+    user.state = state || user.state;
+
+    // Only update currentLevel if it is provided, otherwise leave it unchanged
+    if (currentLevel !== undefined) {
+      user.currentLevel = currentLevel || null; // Set to null if empty
+    }
+    if (participationData) {
+      user.sportsParticipation = participationData; // Replace the participation data
+    }
 
     user = await user.save();
 
-    await Post.updateMany(
-      {
-        "replies.userId": userId,
-      },
-      {
-        $set: {
-          "replies.$[reply].username": user.username,
-          "replies.$[reply].userProfilePic": user.profilePic,
-        },
-      },
-      {
-        arrayFilters: [{ "reply.userId": userId }],
-      }
-    );
-
     user.password = null;
     res.status(200).json(user);
-    // res.status(200).json({
-    //   _id: user._id,
-    //   name: user.name,
-    //   email: user.email,
-    //   username: user.username,
-    //   bio: user.bio,
-    //   profilePic: user.profilePic,
-    // });
-    // console.log("update user: ", user);
   } catch (err) {
     res.status(500).json({ error: err.message });
     console.log("Error in updateUser: ", err.message);
@@ -248,6 +243,32 @@ const searchUsers = async (req, res) => {
   }
 };
 
+const addSportsParticipation = async (req, res) => {
+  const userId = req.user._id;
+  const { year, numberOfCompetitions, numberOfGamesWon, level } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    user.sportsParticipation.push({
+      year,
+      numberOfCompetitions,
+      numberOfGamesWon,
+      level,
+    });
+
+    await user.save();
+    res.status(200).json({
+      message: "Participation added successfully",
+      data: user.sportsParticipation,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+    console.log("Error in addSportsParticipation: ", err.message);
+  }
+};
+
 export {
   signupUser,
   loginUser,
@@ -256,4 +277,5 @@ export {
   updateUser,
   getUserProfile,
   searchUsers,
+  addSportsParticipation,
 };

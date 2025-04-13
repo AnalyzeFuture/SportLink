@@ -6,6 +6,7 @@ import {
   Heading,
   Input,
   Stack,
+  Select,
   useColorModeValue,
   Avatar,
   Center,
@@ -15,6 +16,7 @@ import { useRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import usePreviewImg from "../hooks/usePreviewImg";
 import useShowToast from "../hooks/useShowToast";
+import { State, City } from "country-state-city";
 
 export default function UpdateProfilePage() {
   const [user, setUser] = useRecoilState(userAtom);
@@ -24,6 +26,9 @@ export default function UpdateProfilePage() {
     email: user.email,
     bio: user.bio,
     password: "",
+    district: user.district || "",
+    state: user.state || "",
+    currentLevel: user.currentLevel || "",
   });
   const fileRef = useRef(null);
   const [updating, setUpdating] = useState(false);
@@ -60,6 +65,18 @@ export default function UpdateProfilePage() {
       setUpdating(false);
     }
   };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    // Reset district if state is changed
+    if (name === "state") {
+      setInputs({ ...inputs, [name]: value, district: "" });
+    } else {
+      setInputs({ ...inputs, [name]: value });
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <Flex align={"center"} justify={"center"} my={6}>
@@ -138,6 +155,66 @@ export default function UpdateProfilePage() {
               _placeholder={{ color: "gray.500" }}
               type="text"
             />
+          </FormControl>
+          <FormControl>
+            <FormLabel>State</FormLabel>
+            <Select
+              placeholder="Select State"
+              name="state"
+              value={inputs.state}
+              onChange={handleChange}
+            >
+              {State.getStatesOfCountry("IN").map((state) => (
+                <option key={state.isoCode} value={state.name}>
+                  {state.name}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel>District</FormLabel>
+            <Select
+              placeholder="Select District"
+              name="district"
+              value={inputs.district}
+              onChange={handleChange}
+              isDisabled={!inputs.state}
+            >
+              {inputs.state &&
+                City.getCitiesOfState(
+                  "IN",
+                  State.getStatesOfCountry("IN").find(
+                    (s) => s.name === inputs.state
+                  )?.isoCode
+                ).map((city) => (
+                  <option key={city.name} value={city.name}>
+                    {city.name}
+                  </option>
+                ))}
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel>Current Level</FormLabel>
+            <Select
+              placeholder="Select Current Level"
+              name="currentLevel"
+              value={inputs.currentLevel}
+              onChange={handleChange}
+            >
+              {[
+                "School/Interschool Level",
+                "College/Intercollege Level",
+                "Club Level",
+                "District Level",
+                "State Level",
+                "Nation Level",
+                "International Level",
+              ].map((level, idx) => (
+                <option key={idx} value={level}>
+                  {level}
+                </option>
+              ))}
+            </Select>
           </FormControl>
           <FormControl>
             <FormLabel>Password</FormLabel>

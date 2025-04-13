@@ -7,16 +7,22 @@ chatbot_controller = ChatbotController()
 @chatbot_bp.route('/chat', methods=['POST'])
 def chat():
     """
-    Expects a JSON payload with a 'question' field.
+    Expects a JSON payload with a 'userQuery' field.
     Example:
         {
-            "question": "What is SportLink?"
+            "userQuery": "What is SportLink?"
         }
     """
     data = request.get_json()
-    if not data or 'question' not in data:
-        return jsonify({'error': 'Missing "question" in request.'}), 400
+    if not data or 'userQuery' not in data:
+        return jsonify({'error': 'Missing "userQuery" in request.'}), 400
+    userQuery = data['userQuery']
 
-    question = data['question']
-    response = chatbot_controller.process_question(question)
-    return jsonify(response)
+    try:
+        response = chatbot_controller.get_chat_response(userQuery)
+        return jsonify({'response': response})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+    # response = chatbot_controller.process_question(userQuery)
+    # return jsonify(response)

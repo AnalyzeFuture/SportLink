@@ -12,6 +12,7 @@ import UpdateProfilePage from "./pages/UpdateProfilePage";
 import CreatePost from "./components/CreatePost";
 import ChatPage from "./pages/ChatPage";
 import SearchPage from "./pages/SearchPage";
+import Chatbot from "./components/chatbot";
 
 function App() {
   const user = useRecoilValue(userAtom);
@@ -61,6 +62,7 @@ function App() {
           />
         </Routes>
       </Container>
+      <Chatbot />
     </Box>
   );
 }

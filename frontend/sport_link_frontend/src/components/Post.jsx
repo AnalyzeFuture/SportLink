@@ -155,6 +155,15 @@ const Post = ({ post, postedBy }) => {
               <Image src={post.img} w={"full"} />
             </Box>
           )}
+          {post.hashtags && post.hashtags.length > 0 && (
+            <Flex gap={2} flexWrap="wrap">
+              {post.hashtags.map((tag, index) => (
+                <Text key={index} color="blue.500" fontSize="sm">
+                  #{tag}
+                </Text>
+              ))}
+            </Flex>
+          )}
           <Flex gap={3} my={1}>
             <Actions post={post} />
           </Flex>

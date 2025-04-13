@@ -2,6 +2,7 @@ import express from "express";
 import {
   createPost,
   deletePost,
+  getAllPosts,
   getPost,
   likeUnlikePost,
   replyToPost,
@@ -11,6 +12,7 @@ import {
 import protectRoute from "../middleware/protectRoute.js";
 const router = express.Router();
 
+router.get("/getallposts", getAllPosts);
 router.get("/feed/:feed", protectRoute, getFeedPosts);
 router.get("/:id", getPost);
 router.get("/user/:username", getUserPosts);

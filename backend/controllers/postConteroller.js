@@ -1,6 +1,8 @@
 import User from "../models/userModel.js";
 import Post from "../models/postModel.js";
 import { v2 as cloudinary } from "cloudinary";
+// import fetch from "node-fetch"; // Add this import
+
 const createPost = async (req, res) => {
   try {
     const { postedBy, text } = req.body;
@@ -113,7 +115,38 @@ const likeUnlikePost = async (req, res) => {
       // Like post
       post.likes.push(userId);
       await post.save();
-      res.status(200).json({ message: "Post liked successfully" });
+
+      // Fetch recommended posts
+      try {
+        const response = await fetch(
+          "http://127.0.0.1:8080/api/recommendations",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ post_id: postId }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch recommendations");
+        }
+
+        const recommendations = await response.json();
+
+        // Populate the recommendations with actual posts
+        const recommendedPosts = await Post.find({
+          _id: { $in: recommendations },
+        });
+
+        res
+          .status(200)
+          .json({ message: "Post liked successfully", recommendedPosts });
+      } catch (fetchError) {
+        console.error("Error fetching recommendations: ", fetchError);
+        res.status(500).json({ error: "Failed to fetch recommendations" });
+      }
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -189,6 +222,29 @@ const getUserPosts = async (req, res) => {
   }
 };
 
+const getAllPosts = async (req, res) => {
+  try {
+    console.log("request received");
+
+    const posts = await Post.find(
+      {},
+      { replies: 0, img: 0, postedBy: 0, createdAt: 0, updatedAt: 0, __v: 0 }
+    )
+      .sort({ createdAt: -1 })
+      .lean(); // Use `.lean()` to return plain JavaScript objects instead of Mongoose documents
+
+    // Add likesCount to each post
+    const modifiedPosts = posts.map((post) => ({
+      ...post,
+      likesCount: post.likes.length, // Calculate likes count
+    }));
+
+    res.status(200).json(modifiedPosts);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export {
   createPost,
   getPost,
@@ -197,4 +253,5 @@ export {
   replyToPost,
   getFeedPosts,
   getUserPosts,
+  getAllPosts,
 };
