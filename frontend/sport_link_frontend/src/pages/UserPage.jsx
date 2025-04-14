@@ -9,7 +9,7 @@ import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postAtom";
 import ParticipationData from "../components/ParticipationData";
 import { useToast } from "@chakra-ui/react";
-
+import Analysis from "../components/analysis";
 const UserPage = () => {
   const { user, loading } = useGetUserProfile();
   const { username } = useParams();
@@ -17,7 +17,15 @@ const UserPage = () => {
   const [posts, setPosts] = useRecoilState(postsAtom);
   const [fetchingPosts, setFetchingPosts] = useState(true);
   const [view, setView] = useState("posts"); // New state for toggling views
+  const [sportsParticipation, setSportsParticipation] = useState([]);
+
   const toast = useToast();
+
+  useEffect(() => {
+    if (user?.sportsParticipation) {
+      setSportsParticipation(user.sportsParticipation);
+    }
+  }, [user]);
 
   useEffect(() => {
     const getPosts = async () => {
@@ -51,6 +59,10 @@ const UserPage = () => {
       const data = await res.json();
 
       if (res.ok) {
+        setSportsParticipation((prev) =>
+          prev.filter((record) => record._id !== id)
+        );
+
         toast({
           title: "Success",
           description: "Participation record deleted successfully.",
@@ -85,7 +97,7 @@ const UserPage = () => {
     <>
       <UserHeader user={user} setView={setView} />
       <ParticipationData
-        user={user}
+        user={{ ...user, sportsParticipation }}
         handleDelete={handleDeleteParticipationData}
       />
       {view === "posts" && (
@@ -101,7 +113,7 @@ const UserPage = () => {
           ))}
         </>
       )}
-      {view === "analysis" && <h1>Analysis Component (To be implemented)</h1>}
+      {view === "analysis" && <Analysis user={user} />}
     </>
   );
 };

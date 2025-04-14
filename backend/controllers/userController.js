@@ -223,7 +223,12 @@ const updateUser = async (req, res) => {
 const deleteSportsParticipation = async (req, res) => {
   const userId = req.user._id;
   const { participationId } = req.params; // Get the participation record ID from the request params
-
+  console.log(
+    "deleteSportsParticipation: userId: ",
+    userId,
+    " participationId: ",
+    participationId
+  );
   try {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ error: "User not found" });
@@ -241,6 +246,34 @@ const deleteSportsParticipation = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
     console.log("Error in deleteSportsParticipation: ", err.message);
+  }
+};
+
+const getUsersWithSameLovedSport = async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    // Find the logged-in user
+    const loggedInUser = await User.findById(userId);
+    if (!loggedInUser) return res.status(404).json({ error: "User not found" });
+
+    const { lovedSport } = loggedInUser;
+
+    // Find users with the same lovedSport
+    const users = await User.find({ lovedSport, _id: { $ne: userId } }).select(
+      "lovedSport currentLevel district state sportsParticipation"
+    );
+
+    if (!users || users.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No users found with the same loved sport" });
+    }
+
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+    console.log("Error in getUsersWithSameLovedSport: ", err.message);
   }
 };
 
@@ -306,4 +339,5 @@ export {
   searchUsers,
   addSportsParticipation,
   deleteSportsParticipation,
+  getUsersWithSameLovedSport,
 };

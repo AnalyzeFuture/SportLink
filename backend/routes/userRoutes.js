@@ -9,12 +9,14 @@ import {
   searchUsers,
   addSportsParticipation,
   deleteSportsParticipation,
+  getUsersWithSameLovedSport,
 } from "../controllers/userController.js";
 import protectRoute from "../middleware/protectRoute.js";
 //updated routes
 const router = express.Router();
 
 router.get("/profile/:query", getUserProfile);
+router.get("/same-loved-sport", protectRoute, getUsersWithSameLovedSport);
 router.post("/search", searchUsers);
 router.post("/signup", signupUser); //signup route
 router.post("/login", loginUser); // login route

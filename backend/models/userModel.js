@@ -39,10 +39,10 @@ const userSchema = mongoose.Schema(
     currentLevel: {
       type: String,
       enum: [
-        "Intra-District Level",
-        "Inter-District Level",
-        "Inter-State Level",
-        "Inter-Nation Level",
+        "Intra-District",
+        "Inter-District",
+        "Inter-State",
+        "Inter-Nation",
         null,
       ],
       default: null,

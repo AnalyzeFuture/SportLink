@@ -202,13 +202,10 @@ export default function UpdateProfilePage() {
               onChange={handleChange}
             >
               {[
-                "School/Interschool Level",
-                "College/Intercollege Level",
-                "Club Level",
-                "District Level",
-                "State Level",
-                "Nation Level",
-                "International Level",
+                "Intra-District",
+                "Inter-District",
+                "Inter-State",
+                "Inter-National",
               ].map((level, idx) => (
                 <option key={idx} value={level}>
                   {level}
