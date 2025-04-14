@@ -58,13 +58,10 @@ const sportsList = [
 ];
 
 const levelOptions = [
-  "School/Interschool Level",
-  "College/Intercollege Level",
-  "Club Level",
-  "District Level",
-  "State Level",
-  "Nation Level",
-  "International Level",
+  "Intra-District Level",
+  "Inter-District Level",
+  "Inter-State Level",
+  "Inter-Nation Level",
 ];
 
 const PopupForm = () => {
@@ -77,14 +74,14 @@ const PopupForm = () => {
     currentLevel: "",
     district: "",
     state: "",
-    participation: [],
+    sportsParticipation: [],
   });
 
   const [currentYearData, setCurrentYearData] = useState({
     year: "",
-    totalmatches: "",
-    wins: "",
-    loss: "",
+    numberOfMatches: "",
+    numberOfGamesWon: "",
+    numberOfGamesLost: "",
   });
 
   useEffect(() => {
@@ -114,18 +111,27 @@ const PopupForm = () => {
   const addParticipation = () => {
     if (
       !currentYearData.year ||
-      !currentYearData.totalmatches ||
-      !currentYearData.wins ||
-      !currentYearData.loss
+      !currentYearData.numberOfMatches ||
+      !currentYearData.numberOfGamesWon ||
+      !currentYearData.numberOfGamesLost
     ) {
-      showToast("Error", "Please complete all participation fields.", "error");
+      showToast(
+        "Error",
+        "Please complete all sportsParticipation fields.",
+        "error"
+      );
       return;
     }
     setFormData({
       ...formData,
-      participation: [...formData.participation, currentYearData],
+      sportsParticipation: [...formData.sportsParticipation, currentYearData],
     });
-    setCurrentYearData({ year: "", totalmatches: "", wins: "", loss: "" });
+    setCurrentYearData({
+      year: "",
+      numberOfMatches: "",
+      numberOfGamesWon: "",
+      numberOfGamesLost: "",
+    });
   };
 
   const handleSubmit = async () => {
@@ -232,36 +238,50 @@ const PopupForm = () => {
               <Input
                 type="number"
                 placeholder="Total Matches"
-                name="totalmatches"
-                value={currentYearData.totalmatches}
+                name="numberOfMatches"
+                value={currentYearData.numberOfMatches}
                 onChange={handleYearDataChange}
               />
               <Input
                 type="number"
                 placeholder="Wins"
-                name="wins"
-                value={currentYearData.wins}
+                name="numberOfGamesWon"
+                value={currentYearData.numberOfGamesWon}
                 onChange={handleYearDataChange}
               />
               <Input
                 type="number"
                 placeholder="Loss"
-                name="loss"
-                value={currentYearData.loss}
+                name="numberOfGamesLost"
+                value={currentYearData.numberOfGamesLost}
                 onChange={handleYearDataChange}
               />
+
+              <Select
+                placeholder="Select Level"
+                name="level"
+                value={currentYearData.level}
+                onChange={handleYearDataChange}
+              >
+                <option value="Intra-District">Intra-District</option>
+                <option value="Inter-District">Inter-District</option>
+                <option value="Inter-State">Inter-State</option>
+                <option value="Inter-National">Inter-National</option>
+              </Select>
+
               <Button colorScheme="teal" onClick={addParticipation}>
                 Add
               </Button>
             </Flex>
 
-            {formData.participation.length > 0 && (
+            {formData.sportsParticipation.length > 0 && (
               <Box mt={3}>
-                {formData.participation.map((item, index) => (
+                {formData.sportsParticipation.map((item, index) => (
                   <Box key={index} mt={1} bg="gray.100" p={2} borderRadius={4}>
                     <Text fontSize="sm">
-                      <b>{item.year}</b> — {item.totalmatches} matches,{" "}
-                      {item.wins} wins, {item.loss} losses
+                      <b>{item.year}</b> — {item.numberOfMatches} matches,{" "}
+                      {item.numberOfGamesWon} numberOfGamesWon,{" "}
+                      {item.numberOfGamesLost} losses
                     </Text>
                   </Box>
                 ))}

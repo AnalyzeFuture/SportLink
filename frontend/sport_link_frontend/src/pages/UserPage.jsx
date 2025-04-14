@@ -7,6 +7,8 @@ import Post from "../components/Post";
 import useGetUserProfile from "../hooks/userGetUserProfile";
 import { useRecoilState } from "recoil";
 import postsAtom from "../atoms/postAtom";
+import ParticipationData from "../components/ParticipationData";
+import { useToast } from "@chakra-ui/react";
 
 const UserPage = () => {
   const { user, loading } = useGetUserProfile();
@@ -14,6 +16,8 @@ const UserPage = () => {
   const showToast = useShowToast();
   const [posts, setPosts] = useRecoilState(postsAtom);
   const [fetchingPosts, setFetchingPosts] = useState(true);
+  const [view, setView] = useState("posts"); // New state for toggling views
+  const toast = useToast();
 
   useEffect(() => {
     const getPosts = async () => {
@@ -34,7 +38,40 @@ const UserPage = () => {
     getPosts();
   }, [username, showToast, setPosts]);
 
-  console.log("post is here and it is recoil state", posts);
+  const handleDeleteParticipationData = async (id) => {
+    try {
+      // Call the backend API to delete the participation record
+      const res = await fetch(`/api/users/participation/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user.token}`, // Include the token for authentication
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        toast({
+          title: "Success",
+          description: "Participation record deleted successfully.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        throw new Error(data.error || "Failed to delete participation record.");
+      }
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+  // console.log("post is here and it is recoil state", posts);
 
   if (!user && loading)
     return (
@@ -46,16 +83,25 @@ const UserPage = () => {
   if (!user && !loading) return <h1>User not found</h1>;
   return (
     <>
-      <UserHeader user={user} />
-      {!fetchingPosts && posts.length === 0 && <h1>User has no Post</h1>}
-      {fetchingPosts && (
-        <Flex justifyContent={"center"} my={12}>
-          <Spinner size={"xl"} />
-        </Flex>
+      <UserHeader user={user} setView={setView} />
+      <ParticipationData
+        user={user}
+        handleDelete={handleDeleteParticipationData}
+      />
+      {view === "posts" && (
+        <>
+          {!fetchingPosts && posts.length === 0 && <h1>User has no Post</h1>}
+          {fetchingPosts && (
+            <Flex justifyContent={"center"} my={12}>
+              <Spinner size={"xl"} />
+            </Flex>
+          )}
+          {posts.map((post) => (
+            <Post key={post._id} post={post} postedBy={post.postedBy} />
+          ))}
+        </>
       )}
-      {posts.map((post) => (
-        <Post key={post._id} post={post} postedBy={post.postedBy} />
-      ))}
+      {view === "analysis" && <h1>Analysis Component (To be implemented)</h1>}
     </>
   );
 };

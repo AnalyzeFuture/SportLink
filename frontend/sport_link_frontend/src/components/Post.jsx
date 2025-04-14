@@ -32,7 +32,7 @@ const Post = ({ post, postedBy }) => {
           showToast("Error", data.error, "error");
           return;
         }
-        console.log("getUser data : ", data);
+        // console.log("getUser data : ", data);
         setUser(data);
       } catch (error) {
         showToast("Error", error.message, "error");

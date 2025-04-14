@@ -14,7 +14,7 @@ import { useState } from "react";
 import useShowToast from "../hooks/useShowToast";
 // import {Link  as RouterLink} from "react-router-dom";
 
-const UserHeader = ({ user }) => {
+const UserHeader = ({ user, setView }) => {
   //user whose profile is being viewed
   const toast = useToast();
   const currentUser = useRecoilValue(userAtom); //this is logged in user
@@ -131,7 +131,8 @@ const UserHeader = ({ user }) => {
         <Flex gap={2} alignItems={"center"}>
           <Text color={"gray.light"}>{user.followers.length} followers</Text>
           <Box w="1" h="1" bg={"gray.light"} borderRadius={"full"}></Box>
-          <Link color={"gray.light"}>instagram.com</Link>
+          <Link color={"gray.light"}>{user.district}</Link>
+          <Link color={"gray.light"}>{user.state}</Link>
         </Flex>
         <Flex>
           <Box className="icon-container">
@@ -161,8 +162,9 @@ const UserHeader = ({ user }) => {
           justifyContent={"center"}
           pb="3"
           cursor={"pointer"}
+          onClick={() => setView("posts")}
         >
-          <Text fontWeight={"bold"}>Tracks</Text>
+          <Text fontWeight={"bold"}>Posts</Text>
         </Flex>
         <Flex
           flex={1}
@@ -171,8 +173,9 @@ const UserHeader = ({ user }) => {
           color={"gray.light"}
           pb="3"
           cursor={"pointer"}
+          onClick={() => setView("analysis")}
         >
-          <Text fontWeight={"bold"}> Replies</Text>
+          <Text fontWeight={"bold"}> Analysis</Text>
         </Flex>
       </Flex>
     </VStack>
@@ -181,6 +184,8 @@ const UserHeader = ({ user }) => {
 
 UserHeader.propTypes = {
   user: PropTypes.node,
+  setView: PropTypes.func.isRequired,
 };
 
 export default UserHeader;
+// $2a$10$mo23TW4dvvlDrQTycQIXWewjLX2Z1wEy7p8x.rQkUPhfUxzjJvhgW

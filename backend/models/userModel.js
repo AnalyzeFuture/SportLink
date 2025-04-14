@@ -39,13 +39,10 @@ const userSchema = mongoose.Schema(
     currentLevel: {
       type: String,
       enum: [
-        "School/Interschool Level",
-        "College/Intercollege Level",
-        "Club Level",
-        "District Level",
-        "State Level",
-        "Nation Level",
-        "International Level",
+        "Intra-District Level",
+        "Inter-District Level",
+        "Inter-State Level",
+        "Inter-Nation Level",
         null,
       ],
       default: null,
@@ -61,11 +58,17 @@ const userSchema = mongoose.Schema(
     sportsParticipation: [
       {
         year: Number,
-        numberOfCompetitions: Number,
+        numberOfMatches: Number,
         numberOfGamesWon: Number,
+        numberOfGamesLost: Number,
         level: {
           type: String,
-          enum: ["District", "State", "National", "International"],
+          enum: [
+            "Intra-District",
+            "Inter-District",
+            "Inter-State",
+            "Inter-National",
+          ],
         },
       },
     ],

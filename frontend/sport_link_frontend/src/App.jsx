@@ -16,7 +16,7 @@ import Chatbot from "./components/chatbot";
 
 function App() {
   const user = useRecoilValue(userAtom);
-  console.log(user);
+  console.log("user in app.jsx ", user);
   return (
     <Box position={"relative"} w="full">
       <Container maxW="620px">

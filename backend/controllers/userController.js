@@ -158,7 +158,7 @@ const updateUser = async (req, res) => {
     currentLevel,
     district,
     state,
-    participationData,
+    sportsParticipation,
   } = req.body;
   let { profilePic } = req.body;
   const userId = req.user._id;
@@ -203,8 +203,11 @@ const updateUser = async (req, res) => {
     if (currentLevel !== undefined) {
       user.currentLevel = currentLevel || null; // Set to null if empty
     }
-    if (participationData) {
-      user.sportsParticipation = participationData; // Replace the participation data
+    if (sportsParticipation) {
+      user.sportsParticipation = [
+        ...user.sportsParticipation,
+        ...sportsParticipation,
+      ]; // Replace the participation data
     }
 
     user = await user.save();
@@ -214,6 +217,30 @@ const updateUser = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
     console.log("Error in updateUser: ", err.message);
+  }
+};
+
+const deleteSportsParticipation = async (req, res) => {
+  const userId = req.user._id;
+  const { participationId } = req.params; // Get the participation record ID from the request params
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    // Filter out the record with the given ID
+    user.sportsParticipation = user.sportsParticipation.filter(
+      (record) => record._id.toString() !== participationId
+    );
+
+    await user.save();
+    res.status(200).json({
+      message: "Participation record deleted successfully",
+      data: user.sportsParticipation,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+    console.log("Error in deleteSportsParticipation: ", err.message);
   }
 };
 
@@ -278,4 +305,5 @@ export {
   getUserProfile,
   searchUsers,
   addSportsParticipation,
+  deleteSportsParticipation,
 };
