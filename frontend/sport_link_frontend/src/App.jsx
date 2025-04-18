@@ -13,59 +13,22 @@ import CreatePost from "./components/CreatePost";
 import ChatPage from "./pages/ChatPage";
 import SearchPage from "./pages/SearchPage";
 import Chatbot from "./components/chatbot";
-import { useEffect, useState } from "react";
-import SportsParticipationChart from "./components/SportsParticipationChart";
 
 function App() {
   const user = useRecoilValue(userAtom);
   console.log("user in app.jsx ", user);
-
-  const [sportsParticipation, setSportsParticipation] = useState([]);
-
-  useEffect(() => {
-    const fetchSportsParticipation = async () => {
-      if (!user) {
-        console.log("No user logged in. Clearing sportsParticipation data.");
-        setSportsParticipation([]); // Clear data if no user is logged in
-        return;
-      }
-      try {
-        console.log("Fetching sports participation data for user:", user._id);
-        const res = await fetch(`/api/sports-participation/${user._id}`);
-        const data = await res.json();
-        console.log("API response:", data); // Debugging log
-        if (res.ok && Array.isArray(data) && data.length > 0) {
-          console.log("Valid data received. Updating state.");
-          setSportsParticipation(data);
-        } else {
-          console.warn("No valid data available for the user."); // Warn if data is empty or invalid
-          setSportsParticipation([]); // Set to empty array if no valid data
-        }
-      } catch (error) {
-        console.error("Error fetching sports participation data:", error);
-        setSportsParticipation([]); // Clear data on error
-      }
-    };
-
-    fetchSportsParticipation();
-  }, [user]); // Re-run the effect whenever the `user` changes
-
   return (
     <Box position={"relative"} w="full">
-      {/* Show the chart only if the user is logged in */}
-      {user && (
-        <Box w="80%" mx="auto" mb={4}>
-          <SportsParticipationChart data={sportsParticipation} />
-        </Box>
-      )}
-
       <Container maxW="620px">
         <Header />
 
         <Routes>
           <Route
             path="/"
-            element={user ? <HomePage /> : <Navigate to="/auth" />}
+            element={user ? <>
+             <HomePage /> 
+            </>
+             : <Navigate to="/auth" />}
           />
           <Route
             path="/auth"
