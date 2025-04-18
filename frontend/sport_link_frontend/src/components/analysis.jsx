@@ -5,7 +5,6 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
@@ -19,6 +18,8 @@ const Analysis = ({ user }) => {
   useEffect(() => {
     const fetchAnalysisData = async () => {
       try {
+        // console.log("User Data: ", user);
+        // Fetch other users with the same loved sport
         const response = await fetch(`/api/users/same-loved-sport`, {
           method: "GET",
           headers: {
@@ -85,12 +86,12 @@ const Analysis = ({ user }) => {
           bottom: 5,
         }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
+        {/* <CartesianGrid strokeDasharray="3 3" /> */}
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="totalMatches" fill="#8884d8" name="Total Matches" />
+        <Bar dataKey="totalMatches" fill="#8E1616" name="Total Matches" />
       </BarChart>
     </ResponsiveContainer>
   );

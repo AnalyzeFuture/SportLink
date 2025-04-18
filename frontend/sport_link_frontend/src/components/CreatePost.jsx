@@ -106,8 +106,8 @@ const CreatePost = () => {
     <>
       <Button
         position={"fixed"}
-        buttom={10}
-        right={5}
+        top={7}
+        right={200}
         size={{
           base: "sm",
           sm: "md",

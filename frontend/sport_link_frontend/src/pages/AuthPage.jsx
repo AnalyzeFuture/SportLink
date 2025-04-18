@@ -20,7 +20,7 @@ const AuthPage = () => {
       overflow="hidden"
     >
       {/* Background Video */}
-      {/* <video
+      <video
         autoPlay
         loop
         muted
@@ -36,7 +36,7 @@ const AuthPage = () => {
       >
         <source src={videoplay} type="video/webm" />
         Your browser does not support the video tag.
-      </video> */}
+      </video>
 
       {/* Overlay for opacity effect */}
       <div

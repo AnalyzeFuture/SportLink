@@ -10,6 +10,7 @@ import {
   addSportsParticipation,
   deleteSportsParticipation,
   getUsersWithSameLovedSport,
+  getSportsParticipation,
 } from "../controllers/userController.js";
 import protectRoute from "../middleware/protectRoute.js";
 //updated routes
@@ -23,6 +24,8 @@ router.post("/login", loginUser); // login route
 router.post("/logout", logoutUser);
 router.post("/follow/:id", protectRoute, followUnFollowUser); //id is going to be of the user to be followed/unfollowed
 router.put("/update/:id", protectRoute, updateUser); // Update user profile
+router.get("/sports-participation", protectRoute, getSportsParticipation);// Get sports participation data
+
 router.post("/updateProfile/:id", protectRoute, addSportsParticipation); // Add sports participation data
 router.delete(
   "/participation/:participationId",

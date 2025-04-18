@@ -5,6 +5,7 @@ const userSchema = mongoose.Schema(
     name: {
       type: String,
       required: true,
+      unique: true,
     },
     username: {
       type: String,
@@ -34,7 +35,7 @@ const userSchema = mongoose.Schema(
     },
     email: {
       type: String,
-      dafault: "",
+      dafault:"",
     },
     currentLevel: {
       type: String,
@@ -42,7 +43,7 @@ const userSchema = mongoose.Schema(
         "Intra-District",
         "Inter-District",
         "Inter-State",
-        "Inter-Nation",
+        "Inter-National",
         null,
       ],
       default: null,

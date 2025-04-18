@@ -220,6 +220,21 @@ const updateUser = async (req, res) => {
   }
 };
 
+const getSportsParticipation = async (req, res) => {
+  const userId = req.user._id;
+  console.log("getSportsParticipation: userId: ", userId);
+
+  try {
+    const user = await User.findById(userId).select("sportsParticipation");
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.status(200).json(user.sportsParticipation);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+    console.log("Error in getSportsParticipation: ", err.message);
+  }
+};
+
 const deleteSportsParticipation = async (req, res) => {
   const userId = req.user._id;
   const { participationId } = req.params; // Get the participation record ID from the request params
@@ -340,4 +355,5 @@ export {
   addSportsParticipation,
   deleteSportsParticipation,
   getUsersWithSameLovedSport,
+  getSportsParticipation
 };

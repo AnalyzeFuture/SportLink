@@ -10,6 +10,7 @@ import postsAtom from "../atoms/postAtom";
 import ParticipationData from "../components/ParticipationData";
 import { useToast } from "@chakra-ui/react";
 import Analysis from "../components/analysis";
+import SportsParticipationChart from "../components/SportsParticipationChart";
 const UserPage = () => {
   const { user, loading } = useGetUserProfile();
   const { username } = useParams();
@@ -100,6 +101,7 @@ const UserPage = () => {
         user={{ ...user, sportsParticipation }}
         handleDelete={handleDeleteParticipationData}
       />
+      <SportsParticipationChart user={user} />
       {view === "posts" && (
         <>
           {!fetchingPosts && posts.length === 0 && <h1>User has no Post</h1>}

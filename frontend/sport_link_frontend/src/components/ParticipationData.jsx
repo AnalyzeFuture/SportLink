@@ -1,101 +1,104 @@
-import { Box, Text, VStack, Button, Spinner } from "@chakra-ui/react";
-import PropTypes from "prop-types"; // Import PropTypes
-
+import {
+  Box,
+  Text,
+  VStack,
+  IconButton,
+  Flex,
+} from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { SlBadge } from "react-icons/sl";
+import PropTypes from "prop-types";
 const ParticipationData = ({ user, handleDelete }) => {
-  // const user = useRecoilState(userAtom); // Access the user state directly
-  // console.log("user in participationdata.jsx ", user);
-
-  if (user.sportsParticipation === undefined) {
+  if (!user.sportsParticipation) {
     return (
-      <Box
-        bg="#1E201E"
-        p={4}
-        borderRadius="lg"
-        boxShadow="md"
-        w="full"
-        textAlign="center"
-        position={"fixed"}
-        left={20}
-        top={50}
-        maxW={"350px"}
+      <Box 
+      maxH="100vh"
+      overflowY="scroll"
+      pr={10}
+      position="fixed"
+      left={10}
+      top={20}
+      zIndex={10}
       >
-        <Spinner size="lg" color="white" />
+        <Text color="white">Loading...</Text>
+        
       </Box>
     );
   }
 
   if (user.sportsParticipation.length === 0) {
     return (
-      <Box
-        bg="#1E201E"
-        p={4}
-        borderRadius="lg"
-        boxShadow="md"
-        w="full"
-        textAlign="center"
-        position={"fixed"}
-        left={20}
-        top={50}
-        maxW={"350px"}
+      <Box 
+      maxH="100vh"
+      overflowY="scroll"
+      pr={10}
+      position="fixed"
+      left={10}
+      top={20}
+      zIndex={10}
       >
         <Text fontWeight="bold" color="white">
           No Participation Data Available
         </Text>
+       
       </Box>
     );
   }
 
   return (
     <Box
-      bg="#1E201E"
-      p={4}
-      borderRadius="lg"
-      boxShadow="md"
-      w="full"
-      position={"fixed"}
+      maxH="100vh"
+      overflowY="scroll"
+      pr={10}
+      position="fixed"
       left={10}
-      top={50}
-      maxW={"350px"} // Set a max width for the box
-      textAlign="center"
+      top={20}
+      zIndex={10}
     >
-      <Text fontWeight="bold" mb={2} color="white">
-        Participation Records
-      </Text>
-      <VStack align="start" spacing={4}>
-        {user.sportsParticipation?.map((record) => (
+      <VStack spacing={5}>
+        {user.sportsParticipation.map((record ) => (
           <Box
             key={record._id}
-            p={3}
-            bg="gray.700"
-            borderRadius="md"
-            w="full"
             position="relative"
+            bg="#1E201E"
+            w="330px"
+            minH="100px"
+            borderRadius="12px"
+            p={4}
+            boxShadow="lg"
+            overflow="hidden"
           >
-            <Text fontSize="sm" color="white">
-              <b>Year:</b> {record.year}
-            </Text>
-            <Text fontSize="sm" color="white">
-              <b>Total Matches:</b> {record.numberOfMatches}
-            </Text>
-            <Text fontSize="sm" color="white">
-              <b>Wins:</b> {record.numberOfGamesWon}
-            </Text>
-            <Text fontSize="sm" color="white">
-              <b>Losses:</b> {record.numberOfGamesLost}
-            </Text>
-            <Text fontSize="sm" color="white">
-              <b>Level:</b> {record.level}
-            </Text>
-            <Button
-              size="sm"
-              colorScheme="red"
-              position="absolute"
-              top="10px"
-              right="10px"
-              onClick={() => handleDelete(record._id)} // Call handleDelete with the record ID
-            >
-              Delete
-            </Button>
+            
+            {/* Content */}
+            <Flex zIndex={1} position="relative" justify="space-between" align="center">
+              <Flex gap={3} align="center">
+              <SlBadge color="white" />
+                <Box textColor={"white"}>
+                  <Text fontWeight="bold" fontSize="md" >
+                  Year: <Text as="span" color="#E8C999">{record.year}</Text>
+                  </Text>
+                  <Text fontSize="sm" >
+                    Level: {record.level}
+                  </Text>
+                </Box>
+              </Flex>
+
+              <IconButton
+                icon={<DeleteIcon />}
+                size="sm"
+                colorScheme="red"
+                variant="ghost"
+                onClick={() => handleDelete(record._id)}
+                aria-label="Delete"
+              />
+            </Flex>
+
+            {/* Match Info */}
+            <Flex mt={4} justify="space-around" fontSize="sm" textColor={"white"}>
+              <Text><b>Matches:</b> <Text as={"span"} color="blue.300">{record.numberOfMatches}</Text></Text>
+              <Text><b>Wins:</b> <Text as={"span"} color="teal.300">{record.numberOfGamesWon}</Text></Text>
+              <Text><b>Losses:</b>  <Text as={"span"} color="red.300">{record.numberOfGamesLost}</Text></Text>
+            </Flex>
           </Box>
         ))}
       </VStack>

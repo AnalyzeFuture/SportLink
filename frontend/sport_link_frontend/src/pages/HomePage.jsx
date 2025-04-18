@@ -11,7 +11,7 @@ import PopupForm from "../components/Popupform";
 
 const HomePage = () => {
   const user = useRecoilValue(userAtom); // Get user data from Recoil state
-  const [posts, setPosts] = useRecoilState(postsAtom);
+  const [posts, setPosts] = useRecoilState(postsAtom); // Removed fallback initialization
   const [loading, setLoading] = useState(true);
   const showToast = useShowToast();
 
@@ -20,14 +20,13 @@ const HomePage = () => {
       setLoading(true);
       try {
         const res = await fetch("/api/posts/feed/feed");
-        const data = await res.json();
-        if (data.error) {
-          showToast("Error", data.error, "error");
-          return;
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
         }
-        setPosts(data);
+        const data = await res.json();
+        setPosts(data || []); // Ensure data is an array or fallback to an empty array
       } catch (error) {
-        showToast("Error", error.message, "Error");
+        showToast("Error", error.message, "error"); // Fixed typo in error type
       } finally {
         setLoading(false);
       }
@@ -37,13 +36,14 @@ const HomePage = () => {
 
   return (
     <>
-      {/* Render PopupForm only if user data is incomplete */}
-      {user &&
-        (!user.lovedSport ||
+      {/* Render PopupForm only if user data is incomplete */} 
+     { /*   (!user.lovedSport ||
           !user.experience ||
           !user.achievements ||
           !user.bmi ||
-          !user.preferredTime) && <PopupForm />}
+          !user.preferredTime) &&*/}
+      {user &&
+ <PopupForm />}
       <Box flex="1" w={250} left={40} position={"fixed"}>
         <ProfileSidebar />
       </Box>

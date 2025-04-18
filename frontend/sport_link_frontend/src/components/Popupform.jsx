@@ -58,10 +58,11 @@ const sportsList = [
 ];
 
 const levelOptions = [
-  "Intra-District Level",
-  "Inter-District Level",
-  "Inter-State Level",
-  "Inter-Nation Level",
+ "Intra-District",
+  "Inter-District",
+  "Inter-State",
+  "Inter-National",
+
 ];
 
 const PopupForm = () => {
