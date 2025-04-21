@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import SignupCard from "../components/SignupCard";
-// import videoplay from "../assets/video.webm";
+import videoplay from "../assets/video.webm";
 import { useEffect } from "react";
 
 const AuthPage = () => {
