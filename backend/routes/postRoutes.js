@@ -8,12 +8,14 @@ import {
   replyToPost,
   getFeedPosts,
   getUserPosts,
+  labelAllSentiments,
 } from "../controllers/postConteroller.js";
 import protectRoute from "../middleware/protectRoute.js";
 const router = express.Router();
 
 router.get("/getallposts", getAllPosts);
 router.get("/feed/:feed", protectRoute, getFeedPosts);
+router.get("/label-sentiments", protectRoute, labelAllSentiments);
 router.get("/:id", getPost);
 router.get("/user/:username", getUserPosts);
 router.post("/create", protectRoute, createPost);

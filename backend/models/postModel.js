@@ -35,6 +35,11 @@ const postSchema = mongoose.Schema(
           type: String,
           required: true,
         },
+        sentiment: {
+          type: Number,
+          enum: [-1, 0, 1], // -1 for negative, 0 for neutral, 1 for positive
+          default: 0,
+        },
         userProfilePic: {
           type: String,
         },

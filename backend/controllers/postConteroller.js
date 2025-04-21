@@ -161,7 +161,7 @@ const replyToPost = async (req, res) => {
     const userId = req.user._id;
     const userProfilePic = req.user.profilePic;
     const username = req.user.username;
-    console.log(userProfilePic);
+
     if (!text) {
       return res.status(400).json({ error: "Text field is required" });
     }
@@ -171,7 +171,28 @@ const replyToPost = async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    const reply = { userId, text, userProfilePic, username };
+    // Fetch sentiment from the sentiment analysis API
+    let sentiment = 0; // Default sentiment
+    try {
+      const response = await fetch("http://127.0.0.1:8080/api/sentiment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        sentiment = data.sentiment; // Assuming the API returns { sentiment: 0/1 }
+      } else {
+        console.error("Failed to fetch sentiment");
+      }
+    } catch (error) {
+      console.error("Error fetching sentiment:", error);
+    }
+
+    const reply = { userId, text, userProfilePic, username, sentiment };
 
     post.replies.push(reply);
     await post.save();
@@ -179,7 +200,7 @@ const replyToPost = async (req, res) => {
     res.status(200).json(reply);
   } catch (err) {
     res.status(500).json({ error: err.message });
-    console.log("Error in replytoPost: ", err);
+    console.log("Error in replyToPost:", err);
   }
 };
 
@@ -228,20 +249,68 @@ const getAllPosts = async (req, res) => {
 
     const posts = await Post.find(
       {},
-      { replies: 0, img: 0, postedBy: 0, createdAt: 0, updatedAt: 0, __v: 0 }
+      { img: 0, postedBy: 0, createdAt: 0, updatedAt: 0, __v: 0 }
     )
       .sort({ createdAt: -1 })
       .lean(); // Use `.lean()` to return plain JavaScript objects instead of Mongoose documents
 
-    // Add likesCount to each post
-    const modifiedPosts = posts.map((post) => ({
-      ...post,
-      likesCount: post.likes.length, // Calculate likes count
-    }));
+    // Add likesCount and sentimentScore to each post
+    const modifiedPosts = posts.map((post) => {
+      const sentimentScore = post.replies.reduce(
+        (sum, reply) => sum + (reply.sentiment || 0),
+        0
+      ); // Sum up all sentiment values in the replies array
+
+      return {
+        ...post,
+        likesCount: post.likes.length, // Calculate likes count
+        sentimentScore, // Add sentimentScore
+      };
+    });
 
     res.status(200).json(modifiedPosts);
   } catch (error) {
     res.status(500).json({ error: error.message });
+    console.log("Error in getAllPosts:", error);
+  }
+};
+
+const labelAllSentiments = async (req, res) => {
+  try {
+    const posts = await Post.find({}); // Fetch all posts
+
+    for (const post of posts) {
+      for (const reply of post.replies) {
+        try {
+          const response = await fetch("http://127.0.0.1:8080/api/sentiment", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text: reply.text }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            reply.sentiment = data.sentiment; // Update sentiment in the reply
+            console.log(reply.text, " : ", data.sentiment); // Log the reply text and sentiment
+          } else {
+            console.error(`Failed to fetch sentiment for reply: ${reply.text}`);
+          }
+        } catch (error) {
+          console.error(
+            `Error fetching sentiment for reply: ${reply.text}`,
+            error
+          );
+        }
+      }
+      await post.save(); // Save the updated post with labeled replies
+    }
+
+    res.status(200).json({ message: "All sentiments labeled successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    console.log("Error in labelAllSentiments:", error);
   }
 };
 
@@ -254,4 +323,5 @@ export {
   getFeedPosts,
   getUserPosts,
   getAllPosts,
+  labelAllSentiments,
 };

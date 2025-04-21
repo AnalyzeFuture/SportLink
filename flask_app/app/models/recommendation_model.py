@@ -21,18 +21,17 @@ def fetch_data_from_node():
             post['likes_count'] = len(post['likes'])
         global_data = pd.DataFrame(data)
         print("Fetched data from Node:")
-        print(global_data.head())
+        print(global_data.head()["sentimentScore"])
     else:
         # Log message when no data is fetched
         print("No data fetched from the server.")
         global_data = pd.DataFrame()  # Initialize an empty DataFrame
 
-def get_recommendations_from_model(post_id, likes_weight=0.7, content_weight=0.3):
+def get_recommendations_from_model(post_id, likes_weight=0.5, content_weight=0.3, sentiment_weight=0.2):
     global global_data
     df = global_data
     # Convert hashtags list to string before concatenating, handle non-list values
     df['combined'] = df['text'] + ' ' + df['hashtags'].apply(lambda x: ' '.join(x) if isinstance(x, list) else '')
-
 
     print(df.head())
     # TF-IDF Vectorizer
@@ -42,19 +41,21 @@ def get_recommendations_from_model(post_id, likes_weight=0.7, content_weight=0.3
     # Compute the cosine similarity matrix
     cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
 
-    # Normalize the likes to a scale of 0 to 1
+    # Normalize the likes and sentiment scores to a scale of 0 to 1
     df['normalized_likes'] = df['likes_count'] / df['likes_count'].max()
+    df['normalized_sentiment'] = (df['sentimentScore'] - df['sentimentScore'].min()) / (df['sentimentScore'].max() - df['sentimentScore'].min())
 
     idx = df.index[df['_id'] == post_id].tolist()[0]
     
-    # Get similarity scores and likes
+    # Get similarity scores, likes, and sentiment scores
     sim_scores = list(enumerate(cosine_sim[idx]))
     like_scores = df['normalized_likes'].values
+    sentiment_scores = df['normalized_sentiment'].values
     
     # Combine scores
     combined_scores = []
     for i, sim in sim_scores:
-        combined_score = (likes_weight * like_scores[i]) + (content_weight * sim)
+        combined_score = (likes_weight * like_scores[i]) + (content_weight * sim) + (sentiment_weight * sentiment_scores[i])
         combined_scores.append((i, combined_score))
     
     # Sort by combined score
